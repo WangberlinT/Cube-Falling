@@ -21,16 +21,10 @@ public class OrbitCamera : MonoBehaviour
 
     void Update()
     {
-        float horInput = Input.GetAxis("Horizontal");
+        //float horInput = Input.GetAxis("Horizontal");
+        float horInput = Input.GetAxis("Mouse X");
         float verticalInput = Input.GetAxis("Mouse Y");
-        if(horInput != 0)
-        {
-            _rotY += horInput * rotSpeed;
-        }
-        else
-        {
-            _rotY += Input.GetAxis("Mouse X") * rotSpeed * 3;
-        }
+        _rotY += horInput * rotSpeed;
 
         _rotX -= verticalInput;
 

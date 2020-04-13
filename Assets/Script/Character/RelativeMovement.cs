@@ -40,7 +40,7 @@ public class RelativeMovement : MonoBehaviour
             Quaternion tmp = target.rotation;//save camera init rotate
             target.eulerAngles = new Vector3(0, target.eulerAngles.y, 0);
             movement = target.TransformDirection(movement);//把相对摄像头朝向的movement向量变换为绝对向量
-            //Debug.Log(string.Format("x,z position(abs) = ({0},{1})", movement.x, movement.z));
+            Debug.Log(string.Format("x,z position(abs) = ({0},{1})", movement.x, movement.z));
             target.rotation = tmp;
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
