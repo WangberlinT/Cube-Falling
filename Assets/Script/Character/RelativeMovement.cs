@@ -5,18 +5,18 @@ using UnityEngine;
 public class RelativeMovement : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    public float rotSpeed = 15.0f;
-    public float moveSpeed = 10.0f;
+    public float rotSpeed = 15.0f;      //旋转速度
+    public float moveSpeed = 10.0f;     //移动速度
     //-------Gravity and Jump---------
-    public float jumpSpeed = 5.0f;
-    public float gravity = -9.8f;
-    public float terminalVelocity = -20.0f;
-    public float minFall = -1.5f;
-    public float ground_offset = 0f;
+    public float jumpSpeed = 5.0f;      //跳跃初速度
+    public float gravity = -9.8f;       //重力系数
+    public float terminalVelocity = -20.0f;//最大下落系数
+    public float minFall = -1.5f;       //最小下落系数
+    public float ground_offset = 0f;    //地面偏移
     //------Private-------------------
     private CharacterController character;
     private float verticalSpeed;
-    private ControllerColliderHit contact;//不明白这是啥
+    private ControllerColliderHit contact;//Controller 碰撞检测
     private void Start()
     {
         verticalSpeed = minFall;
@@ -54,13 +54,16 @@ public class RelativeMovement : MonoBehaviour
         bool hitGround = false;
         float distance = 0;
         RaycastHit hit;//RaycastHit 结构体 用于存储射线碰撞信息
-        if(verticalSpeed < 0 && Physics.Raycast(transform.position,Vector3.down, out hit))//不明白
+        //如果是下落状态（速度向下），就检测character向下的射线检测
+        if(verticalSpeed < 0 && Physics.Raycast(transform.position,Vector3.down, out hit))
         {
             Debug.DrawLine(transform.position, hit.point, Color.red);
-            float check = (character.height + character.radius) / 2f + ground_offset;//不明白，怎么判断自己是否被射中的
+            //由于character是胶囊型，所以check是人物和地面碰撞检测距离（应该是一个接近0的很小的值）
+            float check = (character.height + character.radius) / 2f + ground_offset;
             distance = hit.distance;
-            hitGround = hit.distance <= check;
+            hitGround = hit.distance <= check;//如果距离小于check，则检测为碰撞
         }
+        //碰撞发生则表示在地面上
         if(hitGround)
         {
             Debug.Log(string.Format("Grounded,distance = {0}",distance));
@@ -73,7 +76,7 @@ public class RelativeMovement : MonoBehaviour
                 verticalSpeed = minFall;
             }
         }
-        else
+        else//如果在空中
         {
             Debug.Log("Not Grounded");
             verticalSpeed += gravity * Time.deltaTime;
@@ -81,8 +84,9 @@ public class RelativeMovement : MonoBehaviour
             {
                 verticalSpeed = terminalVelocity;
             }
-
-            if(character.isGrounded)//不知道为什么不起作用
+            //这个也是检测着陆，看起来是斜坡的运算？但是应该不会运行到
+            //实测注释掉也没问题
+/*            if(character.isGrounded)//不知道为什么不起作用
             {
                 if (Vector3.Dot(movement, contact.normal) < 0)//计算点积
                 {
@@ -93,6 +97,7 @@ public class RelativeMovement : MonoBehaviour
                     movement += contact.normal * moveSpeed;//不明白
                 }
             }
+*/
         }
         movement.y = verticalSpeed;
         return movement;
@@ -100,6 +105,6 @@ public class RelativeMovement : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        contact = hit;//不明白
+        contact = hit;//简单的绑定作用
     }
 }
