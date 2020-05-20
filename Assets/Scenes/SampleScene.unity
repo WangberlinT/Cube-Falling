@@ -476,13 +476,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.75
+  m_Height: 1.65
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.875, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &1308478236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,11 +498,11 @@ MonoBehaviour:
   target: {fileID: 534669905}
   rotSpeed: 15
   moveSpeed: 10
-  jumpSpeed: 5
+  jumpSpeed: 15
   gravity: -9.8
   terminalVelocity: -20
   minFall: -1.5
-  ground_offset: -1
+  ground_offset: -0.8
 --- !u!4 &1308478238 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400166, guid: fbbb7e0ccd296444f8f4cb972237bf3a,
@@ -538,7 +538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400166, guid: fbbb7e0ccd296444f8f4cb972237bf3a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400166, guid: fbbb7e0ccd296444f8f4cb972237bf3a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 1768146925}
   - component: {fileID: 1768146924}
   m_Layer: 0
-  m_Name: World
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
