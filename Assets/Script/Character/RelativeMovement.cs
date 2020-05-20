@@ -17,10 +17,19 @@ public class RelativeMovement : MonoBehaviour
     private CharacterController character;
     private float verticalSpeed;
     private ControllerColliderHit contact;//Controller 碰撞检测
+    private const string TAG = "[PlayerControl]";
+    //Debug
+    private DebugScreen screen;
+
+    //------UserInput---------
+    private float horInput;
+    private float vertInput;
+    private bool isJump;
     private void Start()
     {
         verticalSpeed = minFall;
         character = GetComponent<CharacterController>();
+        screen = DebugScreen.GetInstance();
     }
     void Update()
     {
@@ -49,6 +58,11 @@ public class RelativeMovement : MonoBehaviour
         character.Move(movement * Time.deltaTime);//巧妙
     }
 
+    private void GetUserInput()
+    {
+
+    }
+
     private Vector3 Jump(Vector3 movement)
     {
         bool hitGround = false;
@@ -66,7 +80,7 @@ public class RelativeMovement : MonoBehaviour
         //碰撞发生则表示在地面上
         if(hitGround)
         {
-            Debug.Log(string.Format("Grounded,distance = {0}",distance));
+            screen.Log(TAG,string.Format("Grounded,distance = {0}",distance));
             if(Input.GetButtonDown("Jump"))
             {
                 verticalSpeed = jumpSpeed;
@@ -78,7 +92,7 @@ public class RelativeMovement : MonoBehaviour
         }
         else//如果在空中
         {
-            Debug.Log("Not Grounded");
+            screen.Log(TAG,"Not Grounded");
             verticalSpeed += gravity * Time.deltaTime;
             if(verticalSpeed < terminalVelocity)
             {
