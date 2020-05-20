@@ -16,7 +16,7 @@ public class DebugScreen : MonoBehaviour
     //<TAG,Message> debug 信息显示存储
     private Dictionary<string, string> logRecord = new Dictionary<string, string>();
     private const string DEBUGINIT = "[Debug] Init Successfully\n";
-    void Start()
+    void Awake()
     {
         text = GetComponent<Text>();
         instance = GetComponent<DebugScreen>();
