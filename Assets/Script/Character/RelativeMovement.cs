@@ -20,11 +20,13 @@ public class RelativeMovement : MonoBehaviour
     private const string TAG = "[PlayerControl]";
     //Debug
     private DebugScreen screen;
+    private Vector3 movement = Vector3.zero;
 
     //------UserInput---------
-    private float horInput;
-    private float vertInput;
-    private bool isJump;
+    private float horInput = 0;
+    private float vertInput = 0;
+    private bool isJump = false;
+    private bool isRunning = false;
     private void Start()
     {
         verticalSpeed = minFall;
@@ -33,17 +35,23 @@ public class RelativeMovement : MonoBehaviour
     }
     void Update()
     {
-        Vector3 movement = Vector3.zero;//set target movement to 0
-        // get input
-        float horInput = Input.GetAxis("Horizontal");
-        float vertInput = Input.GetAxis("Vertical");
+        GetUserInput();
+        Move();
+    }
+
+    private void Move()
+    {
+        movement = Vector3.zero;
+
+        FallDown();
+
         if (horInput != 0 || vertInput != 0)
         {
             // get vector direction(absolute)
             movement.x = horInput;
             movement.z = vertInput;
             movement = Vector3.ClampMagnitude(movement * moveSpeed, moveSpeed);
-            
+
 
             //Debug.Log(string.Format("x,z position = ({0},{1})", movement.x, movement.z));
             Quaternion tmp = target.rotation;//save camera init rotate
@@ -54,22 +62,27 @@ public class RelativeMovement : MonoBehaviour
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
-        movement = Jump(movement);//顺序不能改
-        character.Move(movement * Time.deltaTime);//巧妙
+        if(isJump)
+            Jump();//顺序不能改
+
+        movement.y = verticalSpeed;
+        character.Move(movement * Time.deltaTime);
     }
 
     private void GetUserInput()
     {
-
+        horInput = Input.GetAxis("Horizontal");
+        vertInput = Input.GetAxis("Vertical");
+        isJump = Input.GetButtonDown("Jump");
     }
 
-    private Vector3 Jump(Vector3 movement)
+    private bool IsGrounded()
     {
         bool hitGround = false;
         float distance = 0;
         RaycastHit hit;//RaycastHit 结构体 用于存储射线碰撞信息
         //如果是下落状态（速度向下），就检测character向下的射线检测
-        if(verticalSpeed < 0 && Physics.Raycast(transform.position,Vector3.down, out hit))
+        if (verticalSpeed < 0 && Physics.Raycast(transform.position, Vector3.down, out hit))
         {
             Debug.DrawLine(transform.position, hit.point, Color.red);
             //由于character是胶囊型，所以check是人物和地面碰撞检测距离（应该是一个接近0的很小的值）
@@ -77,44 +90,34 @@ public class RelativeMovement : MonoBehaviour
             distance = hit.distance;
             hitGround = hit.distance <= check;//如果距离小于check，则检测为碰撞
         }
-        //碰撞发生则表示在地面上
         if(hitGround)
+            screen.Log(TAG, string.Format("Grounded,distance = {0}", distance));
+        else
+            screen.Log(TAG, string.Format("Not Grounded,distance = {0}", distance));
+        return hitGround;
+    }
+
+    private void Jump()
+    {
+        //碰撞发生则表示在地面上
+        if(IsGrounded())
         {
-            screen.Log(TAG,string.Format("Grounded,distance = {0}",distance));
-            if(Input.GetButtonDown("Jump"))
-            {
-                verticalSpeed = jumpSpeed;
-            }
-            else
-            {
-                verticalSpeed = minFall;
-            }
+            verticalSpeed = jumpSpeed;
         }
-        else//如果在空中
+    }
+
+    private void FallDown()
+    {
+        if (!IsGrounded())
         {
-            screen.Log(TAG,"Not Grounded");
             verticalSpeed += gravity * Time.deltaTime;
-            if(verticalSpeed < terminalVelocity)
+            if (verticalSpeed < terminalVelocity)
             {
                 verticalSpeed = terminalVelocity;
             }
-            //这个也是检测着陆，看起来是斜坡的运算？但是应该不会运行到
-            //实测注释掉也没问题
-/*            if(character.isGrounded)//不知道为什么不起作用
-            {
-                if (Vector3.Dot(movement, contact.normal) < 0)//计算点积
-                {
-                    movement = contact.normal * moveSpeed;//不明白
-                }
-                else
-                {
-                    movement += contact.normal * moveSpeed;//不明白
-                }
-            }
-*/
         }
-        movement.y = verticalSpeed;
-        return movement;
+        else
+            verticalSpeed = minFall;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
