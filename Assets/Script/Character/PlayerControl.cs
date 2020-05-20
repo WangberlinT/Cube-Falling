@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RelativeMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private Transform target;
     public float rotSpeed = 15.0f;      //旋转速度
@@ -27,8 +27,10 @@ public class RelativeMovement : MonoBehaviour
     private float vertInput = 0;
     private bool isJump = false;
     private bool isRunning = false;
+    private PlayerAnimator animatorControl;
     private void Start()
     {
+        animatorControl = GetComponent<PlayerAnimator>();
         verticalSpeed = minFall;
         character = GetComponent<CharacterController>();
         screen = DebugScreen.GetInstance();
@@ -63,7 +65,7 @@ public class RelativeMovement : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
         if(isJump)
-            Jump();//顺序不能改
+            Jump();
 
         movement.y = verticalSpeed;
         character.Move(movement * Time.deltaTime);
@@ -74,6 +76,12 @@ public class RelativeMovement : MonoBehaviour
         horInput = Input.GetAxis("Horizontal");
         vertInput = Input.GetAxis("Vertical");
         isJump = Input.GetButtonDown("Jump");
+
+        if (horInput != 0 || vertInput != 0)
+            animatorControl.Run();
+        else if(!isJump)
+            animatorControl.Idle();
+        
     }
 
     private bool IsGrounded()
@@ -97,15 +105,17 @@ public class RelativeMovement : MonoBehaviour
         return hitGround;
     }
 
+    // 更新垂直速度
     private void Jump()
     {
         //碰撞发生则表示在地面上
         if(IsGrounded())
         {
+            animatorControl.Jump();
             verticalSpeed = jumpSpeed;
         }
     }
-
+    //更新下落垂直速度
     private void FallDown()
     {
         if (!IsGrounded())
