@@ -9,9 +9,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     GameObject debugScreen;
+    World world;
     void Awake()
     {
         debugScreen = GameObject.Find("Debug Screen");
+        world = GameObject.Find("World").GetComponent<World>();
     }
 
     // Update is called once per frame
@@ -24,5 +26,15 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F3))
             debugScreen.SetActive(!debugScreen.activeSelf);
+
+        if (Input.GetKeyDown(KeyCode.F1))
+            world.SaveWorld();
+        if (Input.GetKeyDown(KeyCode.F2))
+            world.LoadWorld("auto_save2020-05-24-17-53.data");
+        if(Input.GetKeyDown(KeyCode.F4))
+        {
+            //TODO:切换编辑模式
+        }
+            
     }
 }

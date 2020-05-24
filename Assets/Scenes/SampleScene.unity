@@ -639,7 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67e57050b6eeb048a816791840f6a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldWidth: 5
+  worldWidth: 20
   worldHeight: 5
   spawnPos: {x: 0, y: 10, z: 0}
   player: {fileID: 1308478234}

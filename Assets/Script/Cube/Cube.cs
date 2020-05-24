@@ -19,6 +19,8 @@ public class Cube
     protected GameObject cube;
     //初始位置，所有方块的初始位置和属性在World类中记录
     protected Vector3 initPos;
+    //Cube 所在世界
+    protected World world;
 
     
     public Cube(Vector3 pos)
@@ -26,11 +28,35 @@ public class Cube
         initPos = pos;
     }
 
+    public GameObject GetCubeObject()
+    {
+        return cube;
+    }
+
     public Vector3 GetInitPosition()
     {
         return initPos;
     }
 
+    public bool GetIsFalling()
+    {
+        return isFalling;
+    }
+
+    public bool GetChainable()
+    {
+        return chainAble;
+    }
+
+    public int GetStandTime()
+    {
+        return standTime;
+    }
+
+    public float GetDelay()
+    {
+        return delay;
+    }
     /*
      * 当前方块触发坠落，子类重写此方法
      * 云方块的FallDown是破碎消失
