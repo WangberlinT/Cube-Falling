@@ -23,7 +23,8 @@ public class WorldData
             {
                 for(int z = 0; z < worldWidth; z ++)
                 {
-                    cubeDatas[x, y, z] = new CubeData(cubes[x, y, z]);
+                    if(cubes[x,y,z] != null)
+                        cubeDatas[x, y, z] = new CubeData(cubes[x, y, z]);
                 }
             }
         }

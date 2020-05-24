@@ -21,10 +21,10 @@ public class World : MonoBehaviour
     public int worldWidth = 5;
     public int worldHeight = 5;
     public Vector3 spawnPos;
-
+    //玩家出生点(单人游戏中保证唯一性)
     public GameObject player;
 
-    private Vector2Int worldCenter;
+    private Vector3 worldCenter;
     public Dictionary<PrefabType, GameObject> prefabs = new Dictionary<PrefabType, GameObject>();
     //记录世界中每个点的cube
     private Cube[,,] cubes;
@@ -41,21 +41,65 @@ public class World : MonoBehaviour
 
     private void Update()
     {
-        screen.Log("Player Position", "at " + player.transform.position);
+        if(player != null)
+            screen.Log("Player Position", "at " + player.transform.position);
+        screen.Log("Player", "spawnPos = " + spawnPos);
     }
 
     private void WorldGenerate()
     {
         LoadSetting();
         cubes = new Cube[worldWidth, worldHeight, worldWidth];
-        screen.Log("Player", "spawnPos = " + spawnPos);
-        player.transform.position = spawnPos;//在读档的时候player 位置没有改变
+        if(player != null)
+        {
+            player.SetActive(false);
+            player.transform.position = spawnPos;//在读档的时候player 位置没有改变
+            player.SetActive(true);
+        }
+            
         GenerateCubes();
     }
 
     public Cube[,,] GetCubes()
     {
         return cubes;
+    }
+
+    public void SetCube(Vector3 pos, CubeType type)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        int z = (int)pos.z;
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth)
+        {
+            screen.Log("TAG", "out of world size");
+            return;
+        }
+            
+
+        if (type == CubeType.Stone)
+            cubes[x,y,z] = new Stone(pos, this);
+        else if (type == CubeType.Sand)
+            cubes[x,y,z] = new Sand(pos, this);
+        else
+            screen.Log(TAG, "SetCube inexsist!");
+    }
+
+    public void BreakBlock(Vector3 pos)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        int z = (int)pos.z;
+        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth)
+        {
+            screen.Log("TAG", "out of world size");
+            return;
+        }
+        if (cubes[x,y,z] != null)
+        {
+            Destroy(cubes[x, y, z].GetCubeObject());
+            cubes[x, y, z] = null;
+        }
     }
 
     public void SaveWorld()
@@ -85,7 +129,8 @@ public class World : MonoBehaviour
             {
                 for (int z = 0; z < worldWidth; z++)
                 {
-                    Destroy(cubes[x, y, z].GetCubeObject());
+                    if(cubes[x,y,z] != null)
+                        Destroy(cubes[x, y, z].GetCubeObject());
                 }
             }
         }
@@ -94,7 +139,8 @@ public class World : MonoBehaviour
     private void LoadSetting()
     {
         screen = DebugScreen.GetInstance();
-        worldCenter = new Vector2Int(worldWidth / 2, worldWidth / 2);
+        worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);
+        spawnPos = worldCenter;
         LoadPrefab();
     }
 
@@ -107,18 +153,25 @@ public class World : MonoBehaviour
 
     private void GenerateCubes()
     {
-        for(int x = 0;x < worldWidth;x ++)
+        if (loadData == null)
+        {
+            cubes[(int)worldCenter.x, 0, (int)worldCenter.z] = new Stone(worldCenter, this);
+            return;
+        }
+            
+        for (int x = 0;x < worldWidth;x ++)
         {
             for(int y = 0;y < worldHeight;y++)
             {
                 for(int z = 0; z < worldWidth; z++)
                 {
-                    if (loadData == null)
-                        cubes[x, y, z] = new Stone(new Vector3(x, y, z), this);
-                    else if (loadData[x, y, z].cubeType == CubeType.Stone)
-                        cubes[x, y, z] = new Stone(new Vector3(x, y, z), this);
-                    else if (loadData[x, y, z].cubeType == CubeType.Sand)
-                        cubes[x, y, z] = new Sand(new Vector3(x, y, z), this);
+                    if(loadData[x,y,z] != null)
+                    {
+                        if (loadData[x, y, z].cubeType == CubeType.Stone)
+                            cubes[x, y, z] = new Stone(new Vector3(x, y, z), this);
+                        else if (loadData[x, y, z].cubeType == CubeType.Sand)
+                            cubes[x, y, z] = new Sand(new Vector3(x, y, z), this);
+                    }
                 }
             }
         }

@@ -24,14 +24,13 @@ public class GameManager : MonoBehaviour
 
     private void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.F3))
-            debugScreen.SetActive(!debugScreen.activeSelf);
-
         if (Input.GetKeyDown(KeyCode.F1))
             world.SaveWorld();
         if (Input.GetKeyDown(KeyCode.F2))
-            world.LoadWorld("auto_save2020-05-24-17-53.data");
-        if(Input.GetKeyDown(KeyCode.F4))
+            world.LoadWorld("auto_save2020-05-24-23-35.data");
+        if (Input.GetKeyDown(KeyCode.F3))   
+            debugScreen.SetActive(!debugScreen.activeSelf);
+        if (Input.GetKeyDown(KeyCode.F4))
         {
             //TODO:切换编辑模式
         }

@@ -34,5 +34,7 @@ public class CubeData
 
 public enum CubeType
 {
-    Stone,Sand,Air
+    Air, Stone, Sand,
+    //length of cube type
+    Length
 }
