@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
             world.SaveWorld();
         if (Input.GetKeyDown(KeyCode.F2))
-            world.LoadWorld("auto_save2020-05-24-23-35.data");
+            world.LoadWorld("auto_save2020-05-24-23-46.data");
         if (Input.GetKeyDown(KeyCode.F3))   
             debugScreen.SetActive(!debugScreen.activeSelf);
         if (Input.GetKeyDown(KeyCode.F4))

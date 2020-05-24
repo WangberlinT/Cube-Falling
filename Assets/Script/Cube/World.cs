@@ -53,7 +53,7 @@ public class World : MonoBehaviour
         if(player != null)
         {
             player.SetActive(false);
-            player.transform.position = spawnPos;//在读档的时候player 位置没有改变
+            player.transform.position = spawnPos;
             player.SetActive(true);
         }
             
@@ -140,7 +140,8 @@ public class World : MonoBehaviour
     {
         screen = DebugScreen.GetInstance();
         worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);
-        spawnPos = worldCenter;
+        if(loadData == null)
+            spawnPos = worldCenter;
         LoadPrefab();
     }
 
