@@ -5,7 +5,7 @@ using UnityEngine;
 /*
  * 所有方块的父类
  */
-public class Cube : MonoBehaviour
+public class Cube
 {
     //是否处于陷落状态，默认不是
     protected bool isFalling = false;
@@ -15,11 +15,15 @@ public class Cube : MonoBehaviour
     protected int standTime = int.MaxValue;
     //坠落延迟：从旁边的方块触发其坠落到其真正发生坠落的时间，默认1s
     protected float delay = 1f;
+    //生成的方块
+    protected GameObject cube;
     //初始位置，所有方块的初始位置和属性在World类中记录
-    private Vector3 initPos;
-    void Start()
+    protected Vector3 initPos;
+
+    
+    public Cube(Vector3 pos)
     {
-        initPos = transform.position;
+        initPos = pos;
     }
 
     public Vector3 GetInitPosition()
