@@ -18,13 +18,14 @@ public class PlayerControl : MonoBehaviour
     private float verticalSpeed;
     private ControllerColliderHit contact;//Controller 碰撞检测
     private const string TAG = "[PlayerControl]";
+    private Vector3 movement = Vector3.zero;
     //Debug
     private DebugScreen screen;
-    private Vector3 movement = Vector3.zero;
 
     //------UserInput---------
     private float horInput = 0;
     private float vertInput = 0;
+    private float upSpeed = 0;//只有DebugMode才起作用
     private bool isJump = false;
     private bool isRunning = false;
     private PlayerAnimator animatorControl;
@@ -63,11 +64,33 @@ public class PlayerControl : MonoBehaviour
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
-        if(isJump)
-            Jump();
+
+        VerticalMovement();
 
         movement.y = verticalSpeed;
         character.Move(movement * Time.deltaTime);
+    }
+
+    private void VerticalMovement()
+    {
+        if(GameManager.DebugMode)
+        {
+            verticalSpeed = upSpeed;
+        }
+        else
+        {
+            if (isJump)
+                Jump();
+            RunAnimation();
+        }
+    }
+
+    private void RunAnimation()
+    {
+        if (horInput != 0 || vertInput != 0)
+            animatorControl.Run();
+        else if (!isJump)
+            animatorControl.Idle();
     }
 
     private void GetUserInput()
@@ -75,11 +98,12 @@ public class PlayerControl : MonoBehaviour
         horInput = Input.GetAxis("Horizontal");
         vertInput = Input.GetAxis("Vertical");
         isJump = Input.GetButtonDown("Jump");
-
-        if (horInput != 0 || vertInput != 0)
-            animatorControl.Run();
-        else if(!isJump)
-            animatorControl.Idle();
+        if (Input.GetKey(KeyCode.Space))
+            upSpeed = moveSpeed;
+        else if (Input.GetKey(KeyCode.LeftShift))
+            upSpeed = -moveSpeed;
+        else
+            upSpeed = 0;
         
     }
 

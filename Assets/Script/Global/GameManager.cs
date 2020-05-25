@@ -11,29 +11,38 @@ public class GameManager : MonoBehaviour
 {
     private GameObject debugScreen;
     private World world;
+    private GameObject player;
     //Scene Control
     public static int MainScene = 0;
     public static int EditScene = 1;
+    public static bool DebugMode = false;
+
+    //Debug
+    private DebugScreen screen;
 
     void Awake()
     {
         debugScreen = GameObject.Find("Debug Screen");
         world = GameObject.Find("World").GetComponent<World>();
+        screen = DebugScreen.GetInstance();
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetInput();
+        GetGlobalInput();
     }
 
-    private void GetInput()
+    private void GetGlobalInput()
     {
+        
         if (Input.GetKeyDown(KeyCode.F1))
             world.SaveWorld();
         if (Input.GetKeyDown(KeyCode.F2))
-            world.LoadWorld("auto_save2020-05-24-23-46.data");
-        if (Input.GetKeyDown(KeyCode.F3))   
+            world.LoadWorld("auto_save2020-05-25-16-23.data");
+        
+        if (Input.GetKeyDown(KeyCode.F3))
             debugScreen.SetActive(!debugScreen.activeSelf);
         if (Input.GetKeyDown(KeyCode.F4))
         {
@@ -42,6 +51,14 @@ public class GameManager : MonoBehaviour
             else if (SceneManager.GetSceneAt(EditScene).Equals(SceneManager.GetActiveScene()))
                 SceneManager.LoadScene(0);
         }
-            
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            //进入debug模式，人物可飞行，按键触发脚下方块陷落
+            DebugMode = !DebugMode;
+            DebugPlayerBehaviour d = player.GetComponent<DebugPlayerBehaviour>();
+            d.enabled = !d.enabled;
+        }
+        screen.Log("[GameManager]", "DebugMode = " + DebugMode);
     }
 }

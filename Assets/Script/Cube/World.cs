@@ -14,7 +14,7 @@ public enum PrefabType
  * 管理世界中的Cube,Player,Enermy
  * 
  */
-public class World : MonoBehaviour
+public class World : MonoBehaviour, WorldObserver
 {
     
     //世界的大小(x=z=worldWidth, y=worldHeight)
@@ -30,6 +30,9 @@ public class World : MonoBehaviour
     private Cube[,,] cubes;
     private CubeData[,,] loadData;
     private const string TAG = "World";
+
+    //敌人记录
+    private List<EnermySubject> enermyList = new List<EnermySubject>();
 
 
     //Debug 
@@ -85,12 +88,17 @@ public class World : MonoBehaviour
             screen.Log(TAG, "SetCube inexsist!");
     }
 
+    private bool OutOfBound(int x, int y, int z)
+    {
+        return x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth;
+    }
+
     public void BreakBlock(Vector3 pos)
     {
         int x = (int)pos.x;
         int y = (int)pos.y;
         int z = (int)pos.z;
-        if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth)
+        if (OutOfBound(x,y,z))
         {
             screen.Log("TAG", "out of world size");
             return;
@@ -184,5 +192,75 @@ public class World : MonoBehaviour
             return prefabs[type];
         else
             throw new System.Exception("no this prefab");
+    }
+
+    private IEnumerator FallTimer(float time,Cube temp)
+    {
+        screen.Log("[Timer]", "delay: " + time);
+        yield return new WaitForSeconds(time);
+        temp.FallDown();
+    }
+
+    /*
+     * 使世界中某个位置产生一个坠落影响，作用于上下左右的方块
+     * isDie = true 是怪物死亡产生的坠落效果
+     * isDie = false 是方块连锁产生的效果
+     */
+    public void FallAround(Vector3 diePos,bool isDie,float time = 0)
+    {
+        Vector3Int[] offset =  { new Vector3Int( 0, 1, 0 ), new Vector3Int( 0, -1, 0 ),
+                                 new Vector3Int( -1, 0, 0 ), new Vector3Int( 1, 0, 0 ),
+                                 new Vector3Int( 0, 0, 1 ), new Vector3Int( 0, 0, -1 )};
+
+        int x = Mathf.FloorToInt(diePos.x);
+        int y = Mathf.FloorToInt(diePos.y);
+        int z = Mathf.FloorToInt(diePos.z);
+
+        for (int i = 0; i < offset.Length; i++)
+        {
+            Vector3Int pos = new Vector3Int(x, y, z);
+            pos += offset[i];
+            if (!OutOfBound(pos.x, pos.y, pos.z))
+            {
+                Cube temp = cubes[pos.x, pos.y, pos.z];
+                if (temp != null)
+                {
+                    if (isDie)
+                    {
+                        temp.FallDown();
+                    }
+                    else
+                    {
+                        if (temp.GetChainable())
+                        {
+                            if(time != 0)
+                                StartCoroutine(FallTimer(time,temp));
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+
+    public void OnEnermyDie(EnermySubject enermy)
+    {
+        Vector3 diePos = enermy.GetPosition();
+        FallAround(diePos,true);
+    }
+
+    public void OnPlayerDie()
+    {
+        
+    }
+
+    public void AddPlayer()
+    {
+        
+    }
+
+    public void AddEnermy(EnermySubject e)
+    {
+        enermyList.Add(e);
     }
 }

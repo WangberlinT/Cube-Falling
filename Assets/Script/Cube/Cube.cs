@@ -5,7 +5,7 @@ using UnityEngine;
 /*
  * 所有方块的父类
  */
-public class Cube
+public abstract class Cube
 {
     //是否处于陷落状态，默认不是
     protected bool isFalling = false;
@@ -60,16 +60,7 @@ public class Cube
     /*
      * 当前方块触发坠落，子类重写此方法
      * 云方块的FallDown是破碎消失
+     * 除了云方块，其他方块在世界中触发FallAround事件
      */
-    public void FallDown()
-    {
-        //Empty
-    }
-    /*
-     * 当前方块触发周边方块坠落，子类重写此方法
-     */
-    protected void FallAround()
-    {
-        //Empty
-    }
+    public abstract void FallDown();
 }

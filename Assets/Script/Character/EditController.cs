@@ -54,7 +54,7 @@ public class EditController : MonoBehaviour
         float moveZ = Input.GetAxis("Vertical") * speed;
         if (Input.GetKey(KeyCode.Space))
             moveY = speed;
-        else if (Input.GetKey(KeyCode.LeftAlt))
+        else if (Input.GetKey(KeyCode.LeftShift))
             moveY = -speed;
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ + transform.up * moveY;
