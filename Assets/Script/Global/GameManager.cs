@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     //Debug
     private DebugScreen screen;
 
-    void Awake()
+    void Start()
     {
         debugScreen = GameObject.Find("Debug Screen");
         world = GameObject.Find("World").GetComponent<World>();

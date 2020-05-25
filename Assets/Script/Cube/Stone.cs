@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Stone : Cube
 {
@@ -11,6 +9,12 @@ public class Stone : Cube
         cube = GameObject.Instantiate(world.GetPrefab(PrefabType.Stone));
         cube.transform.position = pos;
         rigidbody = cube.GetComponent<Rigidbody>();
+    }
+
+    public override void Disappear()
+    {
+        //播放动画
+        Object.Destroy(cube);
     }
 
     public override void FallDown()

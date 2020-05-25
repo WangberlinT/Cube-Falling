@@ -105,7 +105,7 @@ public class World : MonoBehaviour, WorldObserver
         }
         if (cubes[x,y,z] != null)
         {
-            Destroy(cubes[x, y, z].GetCubeObject());
+            cubes[x, y, z].Disappear();
             cubes[x, y, z] = null;
         }
     }
@@ -251,12 +251,12 @@ public class World : MonoBehaviour, WorldObserver
 
     public void OnPlayerDie()
     {
-        
+        //TODO: Player 死亡后的行为
     }
 
     public void AddPlayer()
     {
-        
+        //将Player加入观察列表
     }
 
     public void AddEnermy(EnermySubject e)

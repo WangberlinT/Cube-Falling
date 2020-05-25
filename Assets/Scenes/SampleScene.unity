@@ -407,7 +407,7 @@ MonoBehaviour:
   target: {fileID: 534669905}
   rotSpeed: 15
   moveSpeed: 10
-  jumpSpeed: 15
+  jumpSpeed: 10
   gravity: -9.8
   terminalVelocity: -20
   minFall: -1.5
