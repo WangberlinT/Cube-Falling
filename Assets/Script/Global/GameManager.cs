@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /*
  * GameManager 管理游戏事：
@@ -8,8 +9,12 @@ using UnityEngine;
  */
 public class GameManager : MonoBehaviour
 {
-    GameObject debugScreen;
-    World world;
+    private GameObject debugScreen;
+    private World world;
+    //Scene Control
+    public static int MainScene = 0;
+    public static int EditScene = 1;
+
     void Awake()
     {
         debugScreen = GameObject.Find("Debug Screen");
@@ -32,7 +37,10 @@ public class GameManager : MonoBehaviour
             debugScreen.SetActive(!debugScreen.activeSelf);
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            //TODO:切换编辑模式
+            if (SceneManager.GetSceneAt(MainScene).Equals(SceneManager.GetActiveScene()))
+                SceneManager.LoadScene(1);
+            else if (SceneManager.GetSceneAt(EditScene).Equals(SceneManager.GetActiveScene()))
+                SceneManager.LoadScene(0);
         }
             
     }
