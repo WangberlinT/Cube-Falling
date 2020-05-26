@@ -25,10 +25,13 @@ public class World : MonoBehaviour, WorldObserver
     public GameObject player;
 
     private Vector3 worldCenter;
+    //记录world中使用的prefab，方便生成物体(方块)
     public Dictionary<PrefabType, GameObject> prefabs = new Dictionary<PrefabType, GameObject>();
-    //记录世界中每个点的cube
+    //记录世界中每个点的cube对象
     private Cube[,,] cubes;
+    //从存档导入的cube data，如果为空则未导入任何地图
     private CubeData[,,] loadData;
+    //DEBUG 标签
     private const string TAG = "World";
 
     //敌人记录
@@ -114,7 +117,11 @@ public class World : MonoBehaviour, WorldObserver
     {
         SaveSystem.SaveWorld(this);
     }
-
+    /*
+     * 加载存档
+     * @param name
+     * 存档名称
+     */
     public void LoadWorld(string name)
     {
         //清空现有属性: Cubes, TODO: Player, Monster...
@@ -185,7 +192,9 @@ public class World : MonoBehaviour, WorldObserver
             }
         }
     }
-
+    /*
+     * 获取方块prefab
+     */
     public GameObject GetPrefab(PrefabType type)
     {
         if (prefabs[type] != null)

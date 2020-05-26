@@ -63,6 +63,8 @@ public abstract class Cube
      * 除了云方块，其他方块在世界中触发FallAround事件
      */
     public abstract void FallDown();
-
+    /*
+     * 销毁方块的接口
+     */
     public abstract void Disappear();
 }
