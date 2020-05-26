@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/*
+ * Stone 岩石
+ * 不发生连锁陷落
+ */
 public class Stone : Cube
 {
     private Rigidbody rigidbody;
@@ -17,7 +21,7 @@ public class Stone : Cube
 
     public override void Disappear()
     {
-        //播放动画
+        //TODO: 播放动画
         actor.DestoryCube();
     }
 

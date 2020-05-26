@@ -46,10 +46,10 @@ public class GameManager : MonoBehaviour
             debugScreen.SetActive(!debugScreen.activeSelf);
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            if (SceneManager.GetSceneAt(MainScene).Equals(SceneManager.GetActiveScene()))
-                SceneManager.LoadScene(1);
-            else if (SceneManager.GetSceneAt(EditScene).Equals(SceneManager.GetActiveScene()))
-                SceneManager.LoadScene(0);
+            if (MainScene == SceneManager.GetActiveScene().buildIndex)
+                SceneManager.LoadScene(EditScene);
+            else if (EditScene == SceneManager.GetActiveScene().buildIndex)
+                SceneManager.LoadScene(MainScene);
         }
 
         if (Input.GetKeyDown(KeyCode.F5))
