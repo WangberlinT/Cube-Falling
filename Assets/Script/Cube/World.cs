@@ -111,6 +111,7 @@ public class World : MonoBehaviour, WorldObserver
 
     public void SaveWorld()
     {
+        Debug.Log("save: " + name);
         SaveSystem.SaveWorld(this,name);
     }
     /*
