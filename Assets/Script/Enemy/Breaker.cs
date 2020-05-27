@@ -27,13 +27,17 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
     // 随机向一个方向走一格
     public void NormalAction()
     {
-        Cube[,,] tmp= thisWorld.GetCubes();
+        // Cube[,,] tmp= thisWorld.GetCubes();
+        GameObject[] cube;
+        cube = GameObject.FindGameObjectsWithTag("Cube");
         Vector3 next;
-        do
-        {
+        int index = 0;
+        //do{
             next = transform.position + RandomDirection(Random.Range(0, 4));
-        }
-        while (tmp[(int)next.x, (int)next.y-1, (int)next.z] == null);
+            Debug.Log("finding Next...");
+            Debug.Log(next);
+            index++;
+        //}while (next ==&&index<50);
 
         gameObject.GetComponent<Rigidbody>().MovePosition(next);
     }
@@ -60,12 +64,22 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
     {
         //设定一个种子
         Random.InitState(0);
+        this.NormalAction();
+        /*
+        GameObject[] cube;
+        cube = GameObject.FindGameObjectsWithTag("Cube");
+        foreach(GameObject c in cube)
+        {
+            Debug.Log(c.transform.position);
+        }
+        */
+        Debug.Log(this.transform.position);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Invoke("NormalAction", 1000);
+        this.Invoke("NormalAction", 1000);
     }
 
     private Vector3 RandomDirection(int i)
@@ -77,9 +91,9 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
             case 1:
                 return new Vector3(-1, 0, 0);
             case 2:
-                return new Vector3(0, -1, 0);
+                return new Vector3(0, 0, 1);
             case 3:
-                return new Vector3(0, 1, 0);
+                return new Vector3(0, 0, -1);
             default:
                 return new Vector3(0, 0, 0);
         }
