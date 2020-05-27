@@ -21,7 +21,7 @@ public static class SaveSystem
 
     public static void SaveWorld(World world, string name)
     {
-        string path = savingDir + name;
+        string path = savingDir + name + POSTFIX;
         Save(path, new WorldData(world));
     }
 
