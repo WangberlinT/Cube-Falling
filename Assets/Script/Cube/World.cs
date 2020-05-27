@@ -33,6 +33,8 @@ public class World : MonoBehaviour, WorldObserver
     private CubeData[,,] loadData;
     //DEBUG 标签
     private const string TAG = "World";
+    //文件名
+    private string name = "";
 
     //敌人记录
     private List<EnermySubject> enermyList = new List<EnermySubject>();
@@ -40,21 +42,15 @@ public class World : MonoBehaviour, WorldObserver
 
     //Debug 
     DebugScreen screen;
-    void Start()
-    {
-        WorldGenerate();   
-    }
 
     private void Update()
     {
-        if(player != null)
-            screen.Log("Player Position", "at " + player.transform.position);
-        screen.Log("Player", "spawnPos = " + spawnPos);
+
     }
 
     private void WorldGenerate()
     {
-        LoadSetting();
+        InitSetting();
         cubes = new Cube[worldWidth, worldHeight, worldWidth];
         if(player != null)
         {
@@ -115,7 +111,7 @@ public class World : MonoBehaviour, WorldObserver
 
     public void SaveWorld()
     {
-        SaveSystem.SaveWorld(this);
+        SaveSystem.SaveWorld(this,name);
     }
     /*
      * 加载存档
@@ -124,9 +120,10 @@ public class World : MonoBehaviour, WorldObserver
      */
     public void LoadWorld(string name)
     {
+        //设置world 名称
+        this.name = name;
         //清空现有属性: Cubes, TODO: Player, Monster...
-        if(cubes != null)
-            DestroyCubes();
+        DestroyCubes();
         //导入存档
         WorldData data = SaveSystem.LoadWorld(name);
         worldWidth = data.worldWidth;
@@ -145,6 +142,8 @@ public class World : MonoBehaviour, WorldObserver
 
     private void DestroyCubes()
     {
+        if (cubes == null)
+            return;
         for (int x = 0; x < worldWidth; x++)
         {
             for (int y = 0; y < worldHeight; y++)
@@ -158,7 +157,7 @@ public class World : MonoBehaviour, WorldObserver
         }
     }
 
-    private void LoadSetting()
+    private void InitSetting()
     {
         screen = DebugScreen.GetInstance();
         worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);

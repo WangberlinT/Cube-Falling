@@ -64,11 +64,6 @@ public class MenuController : MonoBehaviour
         Application.Quit();
     }
 
-    public void GoToEditScene()
-    {
-        SceneManager.LoadScene(GameManager.EditScene);
-    }
-
     public void GoToLoadMapScene()
     {
         SceneManager.LoadScene(GameManager.LoadMapScene);

@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public static bool DebugMode = false;
     private static string mapSelected;//TODO: set 默认地图
     private static GameManager instance;
+    private InputController inputController;
    
 
     //Debug
@@ -38,6 +39,10 @@ public class GameManager : MonoBehaviour
             screen = DebugScreen.GetInstance();
             player = GameObject.Find("Player");
             settingMenu = GetComponent<SettingMenu>();
+            if (MainScene == SceneManager.GetActiveScene().buildIndex)
+                inputController = PlayerInputController.GetInstance();
+            else
+                inputController = EditInputController.GetInstance();
             WorldInit();
         }
         
@@ -62,10 +67,16 @@ public class GameManager : MonoBehaviour
         world.Replay();
     }
 
+    public void SaveWorld()
+    {
+        world.SaveWorld();
+    }
+
     private void WorldInit()
     {
         if(mapSelected != null)
             world.LoadWorld(mapSelected);
+        //else load default
     }
 
     private void GetGlobalInput()
@@ -74,7 +85,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F1))
             world.SaveWorld();
         if (Input.GetKeyDown(KeyCode.F2))
-            world.LoadWorld("auto_save2020-05-25-16-23.data");
+            world.LoadWorld("auto_save2020-05-25-16-23");
         
         if (Input.GetKeyDown(KeyCode.F3))
             debugScreen.SetActive(!debugScreen.activeSelf);
@@ -107,10 +118,13 @@ public class GameManager : MonoBehaviour
         settingMenu.UpdateActive();
         //禁用所有游戏控制
         if (settingMenu.GetMenuActive())
-            InputController.GetInstance().StopAll();
+            inputController.StopAll();
         else
-            InputController.GetInstance().StartAll();
+            inputController.StartAll();
     }
 
-    
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(Menu);
+    }
 }

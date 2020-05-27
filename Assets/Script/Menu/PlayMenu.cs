@@ -10,7 +10,7 @@ public class PlayMenu : MonoBehaviour
         controller = MenuController.GetInstance();
     }
 
-    public void LoadMap()
+    public void LoadEdit()
     {
         controller.GoToLoadMapScene();
     }
@@ -18,11 +18,6 @@ public class PlayMenu : MonoBehaviour
     public void Story()
     {
         controller.GoToStoryScene();
-    }
-
-    public void Edit()
-    {
-        controller.GoToEditScene();
     }
 
     public void Back()

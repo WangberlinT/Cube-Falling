@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadMap : MonoBehaviour
 {
     private string mapSelected;//TODO: 设置默认加载地图
+    private InputField mapNameInput;
     private static LoadMap instance;
+    private List<MapElement> mapElementList = new List<MapElement>();
 
     void Start()
     {
@@ -16,13 +19,8 @@ public class LoadMap : MonoBehaviour
         else
         {
             instance = this;
-            
-            string path = SaveSystem.savingDir;
-            Debug.Log("Load Map in " + path);
-            string[] files = Directory.GetFiles(path, "*"+SaveSystem.POSTFIX);
-            Debug.Log("Number: " + files.Length); 
-            GameObject container = GameObject.Find("MapContainer");
-            GenerateMapElement(files, container);
+            mapNameInput = GameObject.Find("MapNameInput").GetComponent<InputField>();
+            LoadMapFiles();
         }
         
     }
@@ -43,9 +41,26 @@ public class LoadMap : MonoBehaviour
         foreach(string name in filenames)
         {
             string filename = System.IO.Path.GetFileNameWithoutExtension(name);
-            new MapElement(filename, container);
+            mapElementList.Add(new MapElement(filename, container));
             Debug.Log(name);
         }
+    }
+
+    private void LoadMapFiles()
+    {
+        string path = SaveSystem.savingDir;
+        Debug.Log("Load Map in " + path);
+        string[] files = Directory.GetFiles(path, "*" + SaveSystem.POSTFIX);
+        Debug.Log("Number: " + files.Length);
+        GameObject container = GameObject.Find("MapContainer");
+        //在视窗中创建
+        GenerateMapElement(files, container);
+    }
+
+    private void ClearMapElements()
+    {
+        foreach (MapElement me in mapElementList)
+            me.DistroyElement();
     }
 
     public void StartGame()
@@ -53,6 +68,39 @@ public class LoadMap : MonoBehaviour
         GameManager.SetWorldMap(mapSelected);
         SceneManager.LoadScene(GameManager.MainScene);
     }
+
+    public void Edit()
+    {
+        GameManager.SetWorldMap(mapSelected);
+        SceneManager.LoadScene(GameManager.EditScene);
+    }
+
+    public void NewMap()
+    {
+        //TODO: 检查输入
+        string mapName = mapNameInput.text;
+        if(StringValidation.IsValidFileName(mapName))
+        {
+            SaveSystem.CreateNewWorld(mapName);
+            //重载刷新选择栏
+            ClearMapElements();
+            LoadMapFiles();
+        }
+        else
+        {
+            //TODO:提示输入不合法
+            Debug.Log("Invalid Input");
+        }
+        
+    }
+
+    public void DeleteMap()
+    {
+
+    }
+
+    //检查文件名合法性
+    
 
 
 

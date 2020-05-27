@@ -26,4 +26,9 @@ public class MapElement
     {
         LoadMap.GetInstance().SetMap(name);
     }
+
+    public void DistroyElement()
+    {
+        GameObject.Destroy(mapElement);
+    }
 }

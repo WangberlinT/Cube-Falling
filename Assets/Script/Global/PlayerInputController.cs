@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController
+public class PlayerInputController :MonoBehaviour, InputController
 {
     private PlayerControl playerControl;
     private OrbitCamera orbitCamera;
 
-    private static InputController instance;
+    private static PlayerInputController instance;
     // Start is called before the first frame update
     public static InputController GetInstance()
     {
-        if (instance == null)
-        {
-            instance = new InputController();
-            return instance;
-        }
-        else
-            return instance;
+        return instance;
     }
 
-    private InputController()
+    private void Start()
     {
-        playerControl = GameObject.Find("Player").GetComponent<PlayerControl>();
-        orbitCamera = GameObject.Find("Main Camera").GetComponent<OrbitCamera>();
+        if (instance != null)
+            Destroy(this);
+        else
+        {
+            instance = this;
+            playerControl = GameObject.Find("Player").GetComponent<PlayerControl>();
+            orbitCamera = GameObject.Find("Main Camera").GetComponent<OrbitCamera>();
+        }
+        
     }
 
     public void StartAll()

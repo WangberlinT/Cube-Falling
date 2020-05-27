@@ -6,7 +6,9 @@ public static class SaveSystem
 {
     public static string savingDir = Application.persistentDataPath+"/";
     public static string POSTFIX = ".data";
-    public static void SaveWorld(World world)
+    //默认地图为defautlt.meta 玩家不可见，在生成新地图时作为模板
+    private static string DEFAULT_MAP = "default.meta";
+    public static void AutoSaveWorld(World world)
     {
         DateTime date = DateTime.Now;
         WorldData data = new WorldData(world);
@@ -15,6 +17,12 @@ public static class SaveSystem
         
         Save(path, data);
         Debug.Log("Save world" + fileName + " successfully in " + savingDir);
+    }
+
+    public static void SaveWorld(World world, string name)
+    {
+        string path = savingDir + name;
+        Save(path, new WorldData(world));
     }
 
     private static void Save(string path,object data)
@@ -30,7 +38,12 @@ public static class SaveSystem
     public static WorldData LoadWorld(string worldName)
     {
         string path = savingDir + worldName + POSTFIX;
-        if(File.Exists(path))
+        return LoadWorldData(path);
+    }
+
+    private static WorldData LoadWorldData(string path)
+    {
+        if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
@@ -41,6 +54,19 @@ public static class SaveSystem
         {
             throw new IOException("No such file");
         }
+    }
+
+    private static WorldData LoadDefaultWorld()
+    {
+        return LoadWorldData(savingDir + DEFAULT_MAP);
+    }
+
+    public static void CreateNewWorld(string worldName)
+    {
+        //TODO: 检查重复和覆盖
+        WorldData data = LoadDefaultWorld();
+        string path = savingDir + worldName + POSTFIX;
+        Save(path, data);
     }
 
      
