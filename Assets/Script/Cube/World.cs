@@ -136,6 +136,12 @@ public class World : MonoBehaviour, WorldObserver
         WorldGenerate();
     }
 
+    public void Replay()
+    {
+        DestroyCubes();
+        WorldGenerate();
+    }
+
     private void DestroyCubes()
     {
         for (int x = 0; x < worldWidth; x++)

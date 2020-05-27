@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     private GameObject debugScreen;
     private World world;
     private GameObject player;
+    private GameObject settingMenu;
     //Scene Control
     public static int MainScene = 0;
     public static int EditScene = 1;
     public static bool DebugMode = false;
+   
 
     //Debug
     private DebugScreen screen;
@@ -26,6 +28,8 @@ public class GameManager : MonoBehaviour
         world = GameObject.Find("World").GetComponent<World>();
         screen = DebugScreen.GetInstance();
         player = GameObject.Find("Player");
+        settingMenu = GameObject.Find("SettingCavas");
+        settingMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -60,5 +64,21 @@ public class GameManager : MonoBehaviour
             d.enabled = !d.enabled;
         }
         screen.Log("[GameManager]", "DebugMode = " + DebugMode);
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            //打开设置提示栏
+            settingMenu.SetActive(!settingMenu.activeSelf);
+            //禁用所有游戏控制
+            if (settingMenu.activeSelf)
+                InputController.GetInstance().StopAll();
+            else
+                InputController.GetInstance().StartAll();
+        }
+    }
+
+    public void ReplayButton()
+    {
+        world.Replay();
     }
 }
