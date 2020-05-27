@@ -14,8 +14,9 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private GameObject settingMenu;
     //Scene Control
-    public static int MainScene = 0;
-    public static int EditScene = 1;
+    public static int Menu = 0;
+    public static int MainScene = 1;
+    public static int EditScene = 2;
     public static bool DebugMode = false;
    
 
