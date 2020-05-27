@@ -12,7 +12,7 @@ public class PlayerControl : MonoBehaviour
     public float gravity = -9.8f;       //重力系数
     public float terminalVelocity = -20.0f;//最大下落系数
     public float minFall = -1.5f;       //最小下落系数
-    public float ground_offset = 0f;    //地面偏移
+    public float ground_offset = 0.0f;    //地面偏移
     //------Private-------------------
     private CharacterController character;
     private float verticalSpeed;
@@ -117,9 +117,9 @@ public class PlayerControl : MonoBehaviour
         {
             Debug.DrawLine(transform.position, hit.point, Color.red);
             //由于character是胶囊型，所以check是人物和地面碰撞检测距离（应该是一个接近0的很小的值）
-            float check = (character.height + character.radius) / 2f + ground_offset;
+            float check = (character.height + character.radius) / 2f + ground_offset - 0.8f;
             distance = hit.distance;
-            hitGround = hit.distance <= check;//如果距离小于check，则检测为碰撞
+            hitGround = distance <= check;//如果距离小于check，则检测为碰撞
         }
         if(hitGround)
             screen.Log(TAG, string.Format("Grounded,distance = {0}", distance));
