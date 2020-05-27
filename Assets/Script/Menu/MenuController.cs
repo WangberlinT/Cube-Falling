@@ -71,7 +71,7 @@ public class MenuController : MonoBehaviour
 
     public void GoToLoadMapScene()
     {
-
+        SceneManager.LoadScene(GameManager.LoadMapScene);
     }
 
     public void GoToStoryScene()

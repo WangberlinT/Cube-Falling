@@ -705,8 +705,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11500000, guid: d67e57050b6eeb048a816791840f6a6d, type: 3}
-        m_MethodName: 
+      - m_Target: {fileID: 1768146926}
+        m_MethodName: Replay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1061,6 +1061,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1768146925}
   - component: {fileID: 1768146924}
+  - component: {fileID: 1768146926}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1094,6 +1095,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1768146926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768146923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f2f6958ab702146b92cf028cf6656e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1779964117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,7 +1251,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1807967947}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1768146923}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1807967947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1498,7 +1522,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1881030951}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1768146926}
+        m_MethodName: Replay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1881030951
 MonoBehaviour:
   m_ObjectHideFlags: 0

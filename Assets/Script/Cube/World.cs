@@ -125,7 +125,8 @@ public class World : MonoBehaviour, WorldObserver
     public void LoadWorld(string name)
     {
         //清空现有属性: Cubes, TODO: Player, Monster...
-        DestroyCubes();
+        if(cubes != null)
+            DestroyCubes();
         //导入存档
         WorldData data = SaveSystem.LoadWorld(name);
         worldWidth = data.worldWidth;

@@ -5,7 +5,7 @@ using System.IO;
 public static class SaveSystem
 {
     public static string savingDir = Application.persistentDataPath+"/";
-    public const string POSTFIX = ".data";
+    public static string POSTFIX = ".data";
     public static void SaveWorld(World world)
     {
         DateTime date = DateTime.Now;
@@ -29,7 +29,7 @@ public static class SaveSystem
 
     public static WorldData LoadWorld(string worldName)
     {
-        string path = savingDir + worldName;
+        string path = savingDir + worldName + POSTFIX;
         if(File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

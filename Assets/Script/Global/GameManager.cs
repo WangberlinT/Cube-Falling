@@ -12,12 +12,15 @@ public class GameManager : MonoBehaviour
     private GameObject debugScreen;
     private World world;
     private GameObject player;
-    private GameObject settingMenu;
+    private SettingMenu settingMenu;
     //Scene Control
     public static int Menu = 0;
-    public static int MainScene = 1;
-    public static int EditScene = 2;
+    public static int LoadMapScene = 1;
+    public static int MainScene = 2;
+    public static int EditScene = 3;
     public static bool DebugMode = false;
+    private static string mapSelected;//TODO: set 默认地图
+    private static GameManager instance;
    
 
     //Debug
@@ -25,18 +28,44 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        debugScreen = GameObject.Find("Debug Screen");
-        world = GameObject.Find("World").GetComponent<World>();
-        screen = DebugScreen.GetInstance();
-        player = GameObject.Find("Player");
-        settingMenu = GameObject.Find("SettingCavas");
-        settingMenu.SetActive(false);
+        if (instance != null)
+            Destroy(this);
+        else
+        {
+            instance = this;
+            debugScreen = GameObject.Find("Debug Screen");
+            world = GameObject.Find("World").GetComponent<World>();
+            screen = DebugScreen.GetInstance();
+            player = GameObject.Find("Player");
+            settingMenu = GetComponent<SettingMenu>();
+            WorldInit();
+        }
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         GetGlobalInput();
+    }
+
+    public static GameManager GetInstance()
+    {
+        return instance;
+    }
+
+    public static void SetWorldMap(string map)
+    {
+        mapSelected = map;
+    }
+    public void Replay()
+    {
+        world.Replay();
+    }
+
+    private void WorldInit()
+    {
+        if(mapSelected != null)
+            world.LoadWorld(mapSelected);
     }
 
     private void GetGlobalInput()
@@ -68,18 +97,20 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            //打开设置提示栏
-            settingMenu.SetActive(!settingMenu.activeSelf);
-            //禁用所有游戏控制
-            if (settingMenu.activeSelf)
-                InputController.GetInstance().StopAll();
-            else
-                InputController.GetInstance().StartAll();
+            UpdateSettingMenu();
         }
     }
 
-    public void ReplayButton()
+    public void UpdateSettingMenu()
     {
-        world.Replay();
+        //打开设置提示栏
+        settingMenu.UpdateActive();
+        //禁用所有游戏控制
+        if (settingMenu.GetMenuActive())
+            InputController.GetInstance().StopAll();
+        else
+            InputController.GetInstance().StartAll();
     }
+
+    
 }

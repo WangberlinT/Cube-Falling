@@ -8,6 +8,10 @@
 - [x] 坠落一定时间后消失
 - [x] 坠落调试接口
 
+**编辑界面存档**
+
+- [ ] 自定义存档名称
+
 **人物操控**
 
 - [x] 摄像机的缩放
@@ -25,7 +29,24 @@
 - [ ] 底部云层
 - [ ] 天空盒
 
-**游戏界面Nevigation**
+**游戏Nevigation**
+
+- [x] PLAY
+  - [x] LOAD MAP
+    - [ ] BACK
+    - [x] START
+      - [x] ESC
+        - [x] Replay
+        - [ ] Menu
+        - [ ] Quit
+  - [ ] STORY
+  - [x] EDIT
+  - [x] BACK
+- [x] OPTION
+  - [ ] VOLUME
+  - [ ] CONTROL SETTING
+
+- [x] QUIT
 
 **怪物系统**
 
