@@ -3,43 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Breaker : MonoBehaviour, Enermy, EnermySubject
+public class Breaker : Monster, EnermySubject
 {
-    public World thisWorld;
-    public float moveSpeed = 10;    // 移动速度
-    public float traceDepth = 5;    // 仇恨范围
-    public int health = 1;          // 生命
+
+    public World thisWorld;     //World 对象
+    // for Debug is public
+    private bool isMoving =false;   // 正在移动
+    private Vector3 tar;        // 目标方向
+    private Cube[,,] cubeIdx;   //Cube list
     // 死亡行为
     // 死后使地下的方块塌陷
-    public void DeadAction()
+    public Breaker(Vector3 pos):base(pos)
+    {
+        //随机方向种子
+        Random.InitState(0);
+        //初始化各个参数
+        cubeIdx = thisWorld.GetCubes();
+        thisWorld = GameObject.FindObjectOfType<World>();
+        moveSpeed = 0.2f;
+        traceDepth = 5;
+        health = 1;
+        monster = GameObject.Instantiate(thisWorld.GetPrefab(PrefabType.Breaker));
+        monster.transform.position = pos;
+        this.OnCreate();
+    }
+
+    
+    public override void DeadAction()
     {
         OnDie();
         //播放死亡动画
-        Destroy(this);
         throw new System.NotImplementedException();
     }
     // 获得位置
-    public Vector3 GetPosition()
-    {
-        return gameObject.transform.position;
-    }
     // 正常行为
     // 随机向一个方向走一格
-    public void NormalAction()
+    public override void NormalAction()
     {
-        // Cube[,,] tmp= thisWorld.GetCubes();
-        GameObject[] cube;
-        cube = GameObject.FindGameObjectsWithTag("Cube");
-        Vector3 next;
-        int index = 0;
-        //do{
-            next = transform.position + RandomDirection(Random.Range(0, 4));
-            Debug.Log("finding Next...");
-            Debug.Log(next);
-            index++;
-        //}while (next ==&&index<50);
-
-        gameObject.GetComponent<Rigidbody>().MovePosition(next);
+        
+        if(!isMoving)
+        {
+            isMoving = true;
+            do{
+            tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
+            }while (cubeIdx[(int)tar.x,(int)tar.y,(int)tar.z]==null);
+            Debug.Log(this.GetPosition());
+            //this.SetPosition( Vector3.MoveTowards(this.GetPosition(), tar, Time.deltaTime * moveSpeed));
+            monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
+        }
+        else
+        {
+            
+            if (tar == this.GetPosition())
+            {
+                isMoving = false;
+            }else
+            {
+                monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
+            }
+        }
     }
     // 创建
     public void OnCreate()
@@ -54,7 +76,7 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
         throw new System.NotImplementedException();
     }
     // 追踪行为
-    public void TraceAction()
+    public override void TraceAction()
     {
         throw new System.NotImplementedException();
     }
@@ -63,8 +85,7 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
     void Start()
     {
         //设定一个种子
-        Random.InitState(0);
-        this.NormalAction();
+        
         /*
         GameObject[] cube;
         cube = GameObject.FindGameObjectsWithTag("Cube");
@@ -73,13 +94,13 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
             Debug.Log(c.transform.position);
         }
         */
-        Debug.Log(this.transform.position);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        this.Invoke("NormalAction", 1000);
+        // this.Invoke("NormalAction", 1000);
+        this.NormalAction();
     }
 
     private Vector3 RandomDirection(int i)
@@ -98,4 +119,5 @@ public class Breaker : MonoBehaviour, Enermy, EnermySubject
                 return new Vector3(0, 0, 0);
         }
     }
+
 }

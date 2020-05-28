@@ -7,7 +7,8 @@ using UnityEngine;
  */
 public enum PrefabType
 {
-    Stone, Sand
+    Stone, Sand,
+    Breaker
 }
 /*
  * World 类
@@ -42,7 +43,10 @@ public class World : MonoBehaviour, WorldObserver
 
     //Debug 
     DebugScreen screen;
-
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
 
@@ -171,6 +175,7 @@ public class World : MonoBehaviour, WorldObserver
     {
         prefabs[PrefabType.Stone] = (GameObject)Resources.Load("Prefabs/Cubes/Stone",typeof(GameObject));
         prefabs[PrefabType.Sand] = (GameObject)Resources.Load("Prefabs/Cubes/Sand", typeof(GameObject));
+        prefabs[PrefabType.Breaker] = (GameObject)Resources.Load("Prefabs/Enermy/Breaker", typeof(GameObject));
         screen.Log(TAG, "prefab size " + prefabs.Count);
     }
 
