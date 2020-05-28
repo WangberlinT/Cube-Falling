@@ -43,4 +43,20 @@ public abstract class Monster
     public abstract void TraceAction();
     // 平常行为
     public abstract void NormalAction();
+    public Vector3 RandomDirection(int i)
+    {
+        switch (i)
+        {
+            case 0:
+                return new Vector3(1, 0, 0);
+            case 1:
+                return new Vector3(-1, 0, 0);
+            case 2:
+                return new Vector3(0, 0, 1);
+            case 3:
+                return new Vector3(0, 0, -1);
+            default:
+                return new Vector3(0, 0, 0);
+        }
+    }
 }

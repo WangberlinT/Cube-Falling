@@ -31,7 +31,6 @@ public class Breaker : Monster, EnermySubject
     
     public override void DeadAction()
     {
-        OnDie();
         //播放死亡动画
         throw new System.NotImplementedException();
     }
@@ -72,6 +71,7 @@ public class Breaker : Monster, EnermySubject
     // 死亡
     public void OnDie()
     {
+        this.DeadAction();
         thisWorld.OnEnermyDie(this);
         throw new System.NotImplementedException();
     }
@@ -100,25 +100,21 @@ public class Breaker : Monster, EnermySubject
     void FixedUpdate()
     {
         // this.Invoke("NormalAction", 1000);
-        this.NormalAction();
+        if(health>0)
+        {
+            // 仇恨行为
+
+            //正常行为
+            this.NormalAction();
+        }else
+        {
+            // 死亡行为
+            OnDie();
+        }
+
     }
 
-    private Vector3 RandomDirection(int i)
-    {
-        switch(i)
-        {
-            case 0:
-                return new Vector3(1, 0, 0);
-            case 1:
-                return new Vector3(-1, 0, 0);
-            case 2:
-                return new Vector3(0, 0, 1);
-            case 3:
-                return new Vector3(0, 0, -1);
-            default:
-                return new Vector3(0, 0, 0);
-        }
-    }
+    
     /*
      * Replay 的时候要清空world中的Monster
      */
