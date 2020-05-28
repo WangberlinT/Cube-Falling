@@ -20,6 +20,8 @@ public class EditController : MonoBehaviour
     public Transform breakBlock;
     public Transform placeBlock;
     public GameObject playerModel;
+    public GameObject enermyModelPrefab;
+    private GameObject enermyModel;
 
     //------------View Control Private-------------
     private Transform camTrans;
@@ -27,11 +29,10 @@ public class EditController : MonoBehaviour
     private float rotationY = 0f;
 
     //------------Build-------------------------
-    private int selectedBlockIndex = 1;
+    private int selectIndex = 1;
     private World world;
     private Text promptText;
-    private bool playerPositionMode = false;
-    private bool enermyPositionMode = false;
+    private EditMode editMode = EditMode.CubeMode;
 
     //Debug
     private DebugScreen screen;
@@ -45,6 +46,9 @@ public class EditController : MonoBehaviour
         screen = DebugScreen.GetInstance();
         world = GameObject.Find("World").GetComponent<World>();
         promptText = GameObject.Find("Selection prompt").GetComponent<Text>();
+        //设置Enermy默认模型
+        enermyModelPrefab = PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker);
+        InitMonsterModel();
     }
 
     void FixedUpdate()
@@ -73,71 +77,124 @@ public class EditController : MonoBehaviour
     {
 
         float scrool = Input.GetAxis("Mouse ScrollWheel");
-        int length = (int)CubeType.Length;
 
-        if (Input.GetKeyDown(KeyCode.P))
-            playerPositionMode = !playerPositionMode;
+        if (Input.GetKeyDown(KeyCode.E))
+            IncreaseEditMode(true);
+        if (Input.GetKeyDown(KeyCode.Q))
+            IncreaseEditMode(false);
+        bool leftClick = Input.GetMouseButtonDown(0);
+        bool rightClick = Input.GetMouseButtonDown(1);
 
-        if (playerPositionMode)
-            screen.Log("Mode", "player position mode");
-        else
-            screen.Log("Mode", "Cube Mode");
-            
-
-        if(!playerPositionMode && !enermyPositionMode)
+        if (editMode == EditMode.CubeMode)
         {
-            if (scrool > 0)
-            {
-                selectedBlockIndex = (selectedBlockIndex + 1) % length;
-            }
-            else if (scrool < 0)
-            {
-                int complete = length - 1;
-                selectedBlockIndex = (selectedBlockIndex + complete) % length;
-            }
-
-            promptText.text = ((CubeType)selectedBlockIndex).ToString() + " selected";
+            int length = (int)CubeType.Length;
+            UpdateSelectIndex(length, scrool);
 
             if (breakBlock.gameObject.activeSelf)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (leftClick)
                 {
                     screen.Log("Click", "Left");
                     BreakBlock();
                 }
-                else if (Input.GetMouseButtonDown(1))
+                else if (rightClick)
                 {
                     screen.Log("Click", "Right");
                     CreateBlock();
                 }
             }
         }
-        else if(playerPositionMode)
+        else if (editMode == EditMode.PlayerMode)
         {
             //right click place player
-            if (Input.GetMouseButtonDown(1))
+            if (rightClick)
             {
                 SetPlayerPosition();
                 screen.Log("Click", "Right");
             }
-                
+
+        }
+        else if (editMode == EditMode.MonsterMode)
+        {
+            //Monster Mode
+            int length = (int)MonsterType.LENGTH;
+            UpdateSelectIndex(length, scrool);
+            
+            //TODO: setMonster
+            if (rightClick)
+                SetMonster((MonsterType)selectIndex);
         }
 
 
 
 
+        UpdatePrompt();
     }
     private void SetPlayerPosition()
     {
         world.spawnPos = playerModel.transform.position;
         Instantiate(playerModel);
-        playerPositionMode = false;
+        editMode = EditMode.CubeMode;
+    }
+    //TODO: SetMonsterInfo
+    private void SetMonster(MonsterType type)
+    {
+        Debug.Log("Set Monster");
+        Instantiate(enermyModel);
+        MonsterData data = new MonsterData(enermyModel.transform.position,type);
+        world.AddMonsterData(data);
+    }
+
+    private void InitMonsterModel()
+    {
+        if (enermyModel == null)
+            enermyModel = Instantiate(enermyModelPrefab);
+        else
+        {
+            Destroy(enermyModel);
+            enermyModel = Instantiate(enermyModelPrefab);
+        }
+        //只保留模型
+        Destroy(enermyModel.GetComponent<Rigidbody>());
+        Destroy(enermyModel.GetComponentInChildren<BoxCollider>());
+    }
+    
+
+    private void UpdateSelectIndex(int length, float scrool)
+    {
+        if(scrool != 0)
+        {
+            if (scrool > 0)
+            {
+                selectIndex = (selectIndex + 1) % length;
+            }
+            else if (scrool < 0)
+            {
+                int complete = length - 1;
+                selectIndex = (selectIndex + complete) % length;
+            }
+
+            if(editMode == EditMode.MonsterMode)
+            {
+                enermyModelPrefab = PrefabManager.GetInstance().GetPrefabByMonsterType((MonsterType)selectIndex);
+                InitMonsterModel();
+            }
+        }
+        
+    }
+
+    private void UpdatePrompt()
+    {
+        promptText.text = "Mode: " + editMode.ToString()+ " ";
+        if (editMode == EditMode.CubeMode)
+            promptText.text += ((CubeType)selectIndex).ToString() + " selected";
+        
     }
 
     private void CreateBlock()
     {
-        if (selectedBlockIndex != 0)
-            world.SetCube(placeBlock.position, (CubeType)selectedBlockIndex);
+        if (selectIndex != 0)
+            world.SetCube(placeBlock.position, (CubeType)selectIndex);
 
     }
     private void BreakBlock()
@@ -181,18 +238,31 @@ public class EditController : MonoBehaviour
             breakPos.y = Mathf.FloorToInt(breakPos.y);
             breakPos.z = Mathf.FloorToInt(breakPos.z);
 
-            if(!playerPositionMode && !enermyPositionMode)
+            if(editMode == EditMode.CubeMode)
             {
                 breakBlock.position = breakPos;
                 placeBlock.position = placePos;
 
                 breakBlock.gameObject.SetActive(true);
                 placeBlock.gameObject.SetActive(true);
+                
             }
-            else if(playerPositionMode)
+            else if(editMode == EditMode.PlayerMode)
             {
                 playerModel.transform.position = endPos;
                 playerModel.gameObject.SetActive(true);
+                breakBlock.gameObject.SetActive(false);
+                placeBlock.gameObject.SetActive(false);
+            }
+            else if(editMode == EditMode.MonsterMode)
+            {
+                screen.Log("[MonsterEdit]", endPos.ToString());
+                //TODO: 获取实际大小
+                enermyModel.transform.position = endPos;
+                enermyModel.SetActive(true);
+                breakBlock.gameObject.SetActive(false);
+                placeBlock.gameObject.SetActive(false);
+                
             }
             
         }
@@ -201,11 +271,31 @@ public class EditController : MonoBehaviour
             playerModel.gameObject.SetActive(false);
             breakBlock.gameObject.SetActive(false);
             placeBlock.gameObject.SetActive(false);
+            enermyModel.SetActive(false);
         }
         string debugMessage = string.Format("End point: {0}", endPos);
         screen.Log(TAG, debugMessage);
         Debug.DrawLine(ray.origin, endPos, Color.red);
     }
 
+    private void IncreaseEditMode(bool increase)
+    {
+        int mode = (int)editMode;
+        int len = (int)EditMode.LENGTH;
+        if (increase)
+            editMode = (EditMode)((mode + 1) % len);
+        else
+            editMode = (EditMode)((mode + len - 1) % len);
+        //Reset selectIndex
+        selectIndex = 0;
+        screen.Log("Mode", editMode.ToString());
+    }
+
     
+}
+
+public enum EditMode
+{
+    CubeMode,PlayerMode,MonsterMode,
+    LENGTH
 }

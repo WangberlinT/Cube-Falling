@@ -12,7 +12,7 @@ public class Stone : Cube
     public Stone(Vector3 pos, World world):base(pos)
     {
         this.world = world;
-        cube = GameObject.Instantiate(world.GetPrefab(PrefabType.Stone));
+        cube = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Stone));
         cube.transform.position = pos;
         rigidbody = cube.GetComponent<Rigidbody>();
         cube.AddComponent<CubeActor>();

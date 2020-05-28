@@ -39,4 +39,9 @@ public class DebugPlayerBehaviour : MonoBehaviour, EnermySubject
     {
         return transform.position;
     }
+
+    public void Delete()
+    {
+        //Donothing
+    }
 }

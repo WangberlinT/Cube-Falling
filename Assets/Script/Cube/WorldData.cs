@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [System.Serializable]
 public class WorldData
 {
@@ -6,8 +7,10 @@ public class WorldData
     public int worldHeight;
     public float[] spawnPos = new float[3];
     public CubeData[,,] cubeDatas;
+    public List<MonsterData> monsters;
     public WorldData(World world)
     {
+        monsters = world.GetMonsters();
         worldWidth = world.worldWidth;
         worldHeight = world.worldHeight;
         Vector3 pos = world.spawnPos;

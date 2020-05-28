@@ -2,14 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- * PrefabType, 管理Prefab
- */
-public enum PrefabType
-{
-    Stone, Sand,
-    Breaker
-}
+
 /*
  * World 类
  * 管理世界中的Cube,Player,Enermy
@@ -26,10 +19,10 @@ public class World : MonoBehaviour, WorldObserver
     public GameObject player;
 
     private Vector3 worldCenter;
-    //记录world中使用的prefab，方便生成物体(方块)
-    public Dictionary<PrefabType, GameObject> prefabs = new Dictionary<PrefabType, GameObject>();
     //记录世界中每个点的cube对象
     private Cube[,,] cubes;
+    //Monsters 记录
+    private List<MonsterData> monsters;
     //从存档导入的cube data，如果为空则未导入任何地图
     private CubeData[,,] loadData;
     //DEBUG 标签
@@ -44,10 +37,6 @@ public class World : MonoBehaviour, WorldObserver
     //Debug 
     DebugScreen screen;
     private void Start()
-    {
-        
-    }
-    private void Update()
     {
 
     }
@@ -64,6 +53,7 @@ public class World : MonoBehaviour, WorldObserver
         }
             
         GenerateCubes();
+        GenerateEnermys();
     }
 
     public Cube[,,] GetCubes()
@@ -89,6 +79,19 @@ public class World : MonoBehaviour, WorldObserver
             cubes[x,y,z] = new Sand(pos, this);
         else
             screen.Log(TAG, "SetCube inexsist!");
+    }
+
+    public List<MonsterData> GetMonsters()
+    {
+        return monsters;
+    }
+
+    //添加MonsterData
+    public void AddMonsterData(MonsterData monster)
+    {
+        if (monsters == null)
+            monsters = new List<MonsterData>();
+        monsters.Add(monster);
     }
 
     private bool OutOfBound(int x, int y, int z)
@@ -135,14 +138,25 @@ public class World : MonoBehaviour, WorldObserver
         worldHeight = data.worldHeight;
         spawnPos = data.GetSpawnPos();
         loadData = data.cubeDatas;
+        monsters = data.monsters;
         //重置world
         WorldGenerate();
     }
 
     public void Replay()
     {
+        DestroyMonsters();
         DestroyCubes();
         WorldGenerate();
+    }
+
+    private void DestroyMonsters()
+    {
+        if (enermyList == null)
+            return;
+        foreach (EnermySubject e in enermyList)
+            e.Delete();
+        enermyList.Clear();
     }
 
     private void DestroyCubes()
@@ -168,15 +182,18 @@ public class World : MonoBehaviour, WorldObserver
         worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);
         if(loadData == null)
             spawnPos = worldCenter;
-        LoadPrefab();
     }
 
-    private void LoadPrefab()
+    private void GenerateEnermys()
     {
-        prefabs[PrefabType.Stone] = (GameObject)Resources.Load("Prefabs/Cubes/Stone",typeof(GameObject));
-        prefabs[PrefabType.Sand] = (GameObject)Resources.Load("Prefabs/Cubes/Sand", typeof(GameObject));
-        prefabs[PrefabType.Breaker] = (GameObject)Resources.Load("Prefabs/Enermy/Breaker", typeof(GameObject));
-        screen.Log(TAG, "prefab size " + prefabs.Count);
+        if (monsters == null)
+            return;
+        foreach(MonsterData m in monsters)
+        {
+            if (m.GetMonsterType() == MonsterType.Breaker)
+                enermyList.Add(new Breaker(m.GetPos(),this));
+            //TODO: 其他怪物类型
+        }
     }
 
     private void GenerateCubes()
@@ -203,16 +220,6 @@ public class World : MonoBehaviour, WorldObserver
                 }
             }
         }
-    }
-    /*
-     * 获取方块prefab
-     */
-    public GameObject GetPrefab(PrefabType type)
-    {
-        if (prefabs[type] != null)
-            return prefabs[type];
-        else
-            throw new System.Exception("no this prefab");
     }
 
     private IEnumerator FallTimer(float time,Cube temp)

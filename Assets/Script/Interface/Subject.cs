@@ -9,6 +9,8 @@ public interface EnermySubject
     //怪物生成，通知World
     void OnCreate();
 
+    void Delete();
+
     Vector3 GetPosition();
     
 }

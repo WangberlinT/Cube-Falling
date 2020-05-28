@@ -10,7 +10,7 @@ public class Sand : Cube
     {
         chainAble = true;
         this.world = world;
-        cube = GameObject.Instantiate(world.GetPrefab(PrefabType.Sand));
+        cube = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Sand));
         cube.transform.position = pos;
         rigidbody = cube.GetComponent<Rigidbody>();
         cube.AddComponent<CubeActor>();

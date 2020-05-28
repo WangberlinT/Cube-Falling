@@ -1243,6 +1243,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 439102, guid: 761dc460d86e1a4459f0dcc1e5b8c08d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 439102, guid: 761dc460d86e1a4459f0dcc1e5b8c08d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 439102, guid: 761dc460d86e1a4459f0dcc1e5b8c08d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 761dc460d86e1a4459f0dcc1e5b8c08d, type: 3}
 --- !u!1 &968469263
@@ -1714,6 +1726,7 @@ MonoBehaviour:
   breakBlock: {fileID: 206522577}
   placeBlock: {fileID: 1472607539}
   playerModel: {fileID: 210209117}
+  enermyModelPrefab: {fileID: 0}
 --- !u!4 &1609345301
 Transform:
   m_ObjectHideFlags: 0

@@ -13,9 +13,10 @@ public class Breaker : Monster, EnermySubject
     private Cube[,,] cubeIdx;   //Cube list
     // 死亡行为
     // 死后使地下的方块塌陷
-    public Breaker(Vector3 pos):base(pos)
+    public Breaker(Vector3 pos,World world):base(pos)
     {
         //随机方向种子
+        thisWorld = world;
         Random.InitState(0);
         //初始化各个参数
         cubeIdx = thisWorld.GetCubes();
@@ -23,7 +24,7 @@ public class Breaker : Monster, EnermySubject
         moveSpeed = 0.2f;
         traceDepth = 5;
         health = 1;
-        monster = GameObject.Instantiate(thisWorld.GetPrefab(PrefabType.Breaker));
+        monster = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker));
         monster.transform.position = pos;
         this.OnCreate();
     }
@@ -67,7 +68,7 @@ public class Breaker : Monster, EnermySubject
     public void OnCreate()
     {
         thisWorld.AddEnermy(this);
-        throw new System.NotImplementedException();
+        //throw new System.NotImplementedException();
     }
     // 死亡
     public void OnDie()
@@ -119,5 +120,11 @@ public class Breaker : Monster, EnermySubject
                 return new Vector3(0, 0, 0);
         }
     }
-
+    /*
+     * Replay 的时候要清空world中的Monster
+     */
+    public void Delete()
+    {
+        Object.Destroy(monster);
+    }
 }

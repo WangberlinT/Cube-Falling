@@ -10,7 +10,7 @@
 
 **编辑界面存档**
 
-- [ ] 自定义存档名称
+- [x] 自定义存档名称
 
 **人物操控**
 
@@ -33,12 +33,13 @@
 
 - [x] PLAY
   - [x] LOAD MAP
-    - [ ] BACK
+    - [x] BACK
     - [x] START
       - [x] ESC
         - [x] Replay
-        - [ ] Menu
-        - [ ] Quit
+        - [x] Menu
+        - [x] Save
+        - [x] Quit
   - [ ] STORY
   - [x] EDIT
   - [x] BACK
@@ -62,32 +63,7 @@
 
 **热键说明**
 
-关于全局的Input输入在`GameManager`中定义
-
-`F1` 保存地图(编辑模式下)，当前只有默认保存
-
-保存名称：`auto_save[DateTime]`
-
-保存路径：`Application.persistentDataPath/` (输出后应该在游戏的Data目录下，编辑器模式保存在Unity系统设置的永久存储目录)
-
-
-
-`F2` 加载地图(编辑模式下)，没有做地图选择，加载的地图在`GameManager`中硬编码
-
-```c#
-if (Input.GetKeyDown(KeyCode.F2))
-            world.LoadWorld("auto_save2020-05-24-23-46.data");
-```
-
-根据调试需要更改地图名称
-
-之后尽快添加目录选择功能
-
-
-
 `F3` Debug窗口显示与隐藏
-
-`F4` 切换地图编辑/游戏场景
 
 `F5` 游戏场景切换成人物Debug模式/正常模式，在Debug模式下，按E键触发人物所在位置的方块坠落事件(替代敌人死亡)
 
