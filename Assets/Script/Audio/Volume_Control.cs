@@ -6,7 +6,7 @@ public class Volume_Control : MonoBehaviour
 {
     public AudioSource audioSource;
     // Update is called once per frame
-    void Update()
+    void Start()
     {
         audioSource.volume = Global.VOLUME;
     }
