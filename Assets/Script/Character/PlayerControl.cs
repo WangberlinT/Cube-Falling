@@ -29,6 +29,7 @@ public class PlayerControl : MonoBehaviour
     private bool isJump = false;
     private bool isRunning = false;
     private PlayerAnimator animatorControl;
+    public AudioSource audioSource;
     private void Start()
     {
         animatorControl = GetComponent<PlayerAnimator>();
@@ -64,7 +65,10 @@ public class PlayerControl : MonoBehaviour
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
-
+        if(IsGrounded() && !audioSource.isPlaying &&  (horInput != 0 || vertInput != 0))
+            audioSource.Play();
+        else
+            audioSource.Pause();
         VerticalMovement();
 
         movement.y = verticalSpeed;
