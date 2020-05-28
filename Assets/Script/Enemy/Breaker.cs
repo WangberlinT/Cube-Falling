@@ -20,7 +20,6 @@ public class Breaker : Monster, EnermySubject
         Random.InitState(0);
         //初始化各个参数
         cubeIdx = thisWorld.GetCubes();
-        thisWorld = GameObject.FindObjectOfType<World>();
         moveSpeed = 0.2f;
         traceDepth = 5;
         health = 1;
