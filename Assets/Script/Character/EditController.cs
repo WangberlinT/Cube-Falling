@@ -33,6 +33,7 @@ public class EditController : MonoBehaviour
     private World world;
     private Text promptText;
     private EditMode editMode = EditMode.CubeMode;
+    public Vector3 enermyPosOffset = new Vector3(0.5f, 0, 0.5f);
 
     //Debug
     private DebugScreen screen;
@@ -258,7 +259,7 @@ public class EditController : MonoBehaviour
             {
                 screen.Log("[MonsterEdit]", endPos.ToString());
                 //TODO: 获取实际大小
-                enermyModel.transform.position = endPos;
+                enermyModel.transform.position = placePos + enermyPosOffset;
                 enermyModel.SetActive(true);
                 breakBlock.gameObject.SetActive(false);
                 placeBlock.gameObject.SetActive(false);
