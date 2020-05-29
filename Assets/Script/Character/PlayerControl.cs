@@ -30,6 +30,7 @@ public class PlayerControl : MonoBehaviour
     private bool isRunning = false;
     private PlayerAnimator animatorControl;
     public AudioSource audioSource;
+    public Canvas Fail_Canvas;
     private void Start()
     {
         animatorControl = GetComponent<PlayerAnimator>();
@@ -65,6 +66,7 @@ public class PlayerControl : MonoBehaviour
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
+        //判断是否要播放脚步声
         if(IsGrounded() && !audioSource.isPlaying &&  (horInput != 0 || vertInput != 0))
             audioSource.Play();
         else
@@ -129,6 +131,9 @@ public class PlayerControl : MonoBehaviour
             screen.Log(TAG, string.Format("Grounded,distance = {0}", distance));
         else
             screen.Log(TAG, string.Format("Not Grounded,distance = {0}", distance));
+        //悬空状态
+        if(!hitGround&&distance==0&&verticalSpeed<-10.0f)
+            Fail_Canvas.enabled = true;
         return hitGround;
     }
 
