@@ -6,7 +6,7 @@ public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private Transform target;
     public float rotSpeed = 15.0f;      //旋转速度
-    public float moveSpeed = 10.0f;     //移动速度
+    public float moveSpeed = 3.0f;     //移动速度
     //-------Gravity and Jump---------
     public float jumpSpeed = 5.0f;      //跳跃初速度
     public float gravity = -9.8f;       //重力系数
