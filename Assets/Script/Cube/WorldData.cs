@@ -10,7 +10,7 @@ public class WorldData
     public List<MonsterData> monsters;
     public WorldData(World world)
     {
-        monsters = world.GetMonsters();
+        monsters = world.GetMonsterDatas();
         worldWidth = world.worldWidth;
         worldHeight = world.worldHeight;
         Vector3 pos = world.spawnPos;

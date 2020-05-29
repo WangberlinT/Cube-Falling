@@ -34,7 +34,9 @@ public class Stone : Cube
             rigidbody.isKinematic = false;
             world.FallAround(initPos,false,delay);
             actor.CheckToDestory();
+            world.DecreaseCubeCount();
+            world.CheckWin();
         }
-
+        
     }
 }

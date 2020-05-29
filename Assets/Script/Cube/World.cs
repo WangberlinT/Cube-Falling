@@ -6,7 +6,8 @@ using UnityEngine;
 /*
  * World 类
  * 管理世界中的Cube,Player,Enermy
- * 
+ * 处理Cube, Player, Enermy的交互
+ * 唯一存在
  */
 public class World : MonoBehaviour, WorldObserver
 {
@@ -21,21 +22,24 @@ public class World : MonoBehaviour, WorldObserver
     private Vector3 worldCenter;
     //记录世界中每个点的cube对象
     private Cube[,,] cubes;
-    //从存档导入的cube data，如果为空则未导入任何地图
+    //从存档导入的cube data，如果为空则未导入任何地图TODO: 重构为cubeManager
     private CubeData[,,] loadData;
     //DEBUG 标签
     private const string TAG = "World";
     //文件名
     private string name = "";
     //敌人记录
-    private MonsterManager monsterRecorder = new MonsterManager();
-
+    
+    private MonsterRecorder monsterRecorder = new MonsterRecorder();
     //Debug 
     DebugScreen screen;
+    //记录方块数量
+    private int cubeCount;
 
     //单例
     private static World instance;
 
+    //获取world单例
     public static World GetInstance()
     {
         return instance;
@@ -68,12 +72,16 @@ public class World : MonoBehaviour, WorldObserver
         GenerateCubes();
         monsterRecorder.GenerateEnermys();
     }
-
+    /*
+     * 获取cubes
+     */
     public Cube[,,] GetCubes()
     {
         return cubes;
     }
-
+    /*
+     * 对pos设置类型为type的方块
+     */
     public void SetCube(Vector3 pos, CubeType type)
     {
         int x = (int)pos.x;
@@ -86,14 +94,16 @@ public class World : MonoBehaviour, WorldObserver
         }
 
         if (type == CubeType.Stone)
-            cubes[x,y,z] = new Stone(pos, this);
+            cubes[x, y, z] = new Stone(pos, this);
         else if (type == CubeType.Sand)
-            cubes[x,y,z] = new Sand(pos, this);
-        else
-            screen.Log(TAG, "SetCube inexsist!");
+            cubes[x, y, z] = new Sand(pos, this);
+        else if (type == CubeType.Ice)
+            cubes[x, y, z] = new Ice(pos, this);
     }
-
-    public List<MonsterData> GetMonsters()
+    /*
+     * 获取世界中怪物信息
+     */
+    public List<MonsterData> GetMonsterDatas()
     {
         return monsterRecorder.GetMonsterDatas();
     }
@@ -103,10 +113,31 @@ public class World : MonoBehaviour, WorldObserver
     {
         monsterRecorder.AddMonster(monster);
     }
-
+    /*
+     * 删除指定初始位置的怪物
+     */
     public void DeleteMonster(Vector3 pos)
     {
         monsterRecorder.DeleteMonster(pos);
+    }
+    /*
+     * 破坏方块
+     */
+    public void BreakBlock(Vector3 pos)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        int z = (int)pos.z;
+        if (OutOfBound(x, y, z))
+        {
+            screen.Log("TAG", "out of world size");
+            return;
+        }
+        if (cubes[x, y, z] != null)
+        {
+            cubes[x, y, z].Disappear();
+            cubes[x, y, z] = null;
+        }
     }
 
     private bool OutOfBound(int x, int y, int z)
@@ -114,23 +145,10 @@ public class World : MonoBehaviour, WorldObserver
         return x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth;
     }
 
-    public void BreakBlock(Vector3 pos)
-    {
-        int x = (int)pos.x;
-        int y = (int)pos.y;
-        int z = (int)pos.z;
-        if (OutOfBound(x,y,z))
-        {
-            screen.Log("TAG", "out of world size");
-            return;
-        }
-        if (cubes[x,y,z] != null)
-        {
-            cubes[x, y, z].Disappear();
-            cubes[x, y, z] = null;
-        }
-    }
-
+    
+    /*
+     * 保存世界状态信息
+     */
     public void SaveWorld()
     {
         Debug.Log("save: " + name);
@@ -155,13 +173,34 @@ public class World : MonoBehaviour, WorldObserver
         loadData = data.cubeDatas;
         monsterRecorder.LoadMonsterDatas(data.monsters);
     }
-
+    /*
+     * 重启游戏
+     */
     public void Replay()
     {
-        //DestroyMonsters();
         monsterRecorder.DestroyMonsters();
         DestroyCubes();
         WorldGenerate();
+    }
+
+    /*
+     * 检查游戏胜利条件
+     */
+    public void CheckWin()
+    {
+        if (cubeCount == 0)
+            Win();
+    }
+
+    private void Win()
+    {
+        Debug.Log("Win");
+    }
+
+    public void DecreaseCubeCount()
+    {
+        cubeCount--;
+        screen.Log("[CubeCount]", cubeCount.ToString());
     }
 
     private void DestroyCubes()
@@ -187,6 +226,7 @@ public class World : MonoBehaviour, WorldObserver
         worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);
         if(loadData == null)
             spawnPos = worldCenter;
+        cubeCount = 0;
     }
 
     private void GenerateCubes()
@@ -209,6 +249,11 @@ public class World : MonoBehaviour, WorldObserver
                             cubes[x, y, z] = new Stone(new Vector3(x, y, z), this);
                         else if (loadData[x, y, z].cubeType == CubeType.Sand)
                             cubes[x, y, z] = new Sand(new Vector3(x, y, z), this);
+                        else if (loadData[x, y, z].cubeType == CubeType.Ice)
+                            cubes[x, y, z] = new Ice(new Vector3(x, y, z), this);
+
+                        cubeCount++;
+                        screen.Log("[CubeCount]", cubeCount.ToString());
                     }
                 }
             }
@@ -263,23 +308,31 @@ public class World : MonoBehaviour, WorldObserver
             }
         }
     }
-
+    /*
+     * 怪物死亡时触发死亡位置的陷落事件
+     */
     public void OnEnermyDie(EnermySubject enermy)
     {
         Vector3 diePos = enermy.GetPosition();
         FallAround(diePos,true);
     }
-
+    /*
+     * 玩家死亡时，打开游戏结束提示框
+     */
     public void OnPlayerDie()
     {
         //TODO: Player 死亡后的行为
     }
-
+    /*
+     * 玩家加入游戏，添加至观察列表
+     */
     public void AddPlayer()
     {
         //将Player加入观察列表
     }
-
+    /*
+     * Enermy加入world，添加至观察列表
+     */
     public void AddEnermy(EnermySubject e)
     {
         monsterRecorder.AddEnermySubject(e);

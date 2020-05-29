@@ -27,6 +27,8 @@ public class CubeData
             return CubeType.Stone;
         else if (cube is Sand)
             return CubeType.Sand;
+        else if (cube is Ice)
+            return CubeType.Ice;
         else
             return CubeType.Air;
     }
@@ -34,7 +36,7 @@ public class CubeData
 
 public enum CubeType
 {
-    Air, Stone, Sand,
+    Air,Stone, Sand,Ice,
     //length of cube type
     Length
 }
