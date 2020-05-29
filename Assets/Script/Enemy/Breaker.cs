@@ -40,16 +40,20 @@ public class Breaker : Monster
     // 随机向一个方向走一格
     public override void NormalAction()
     {
+        //Debug.Log(isMoving);
+//        tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
         
         if(!isMoving)
         {
+            int index = 0;
             isMoving = true;
             do{
-            tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
-            }while (cubeIdx[(int)tar.x,(int)tar.y,(int)tar.z]==null);
-            Debug.Log(this.GetPosition());
+                tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
+                index++;
+            }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index<5);
             //this.SetPosition( Vector3.MoveTowards(this.GetPosition(), tar, Time.deltaTime * moveSpeed));
             monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
+            this.SetPosition(monster.transform.localPosition);
         }
         else
         {
@@ -59,9 +63,12 @@ public class Breaker : Monster
                 isMoving = false;
             }else
             {
+                Debug.Log("Moving");
                 monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
+                this.SetPosition(monster.transform.localPosition);
             }
         }
+        
     }
     // 创建
     public override void OnCreate()
