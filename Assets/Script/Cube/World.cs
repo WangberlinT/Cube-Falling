@@ -21,24 +21,37 @@ public class World : MonoBehaviour, WorldObserver
     private Vector3 worldCenter;
     //记录世界中每个点的cube对象
     private Cube[,,] cubes;
-    //Monsters 记录
-    private List<MonsterData> monsters;
     //从存档导入的cube data，如果为空则未导入任何地图
     private CubeData[,,] loadData;
     //DEBUG 标签
     private const string TAG = "World";
     //文件名
     private string name = "";
-
     //敌人记录
-    private List<EnermySubject> enermyList = new List<EnermySubject>();
-
+    private MonsterRecorder monsterRecorder = new MonsterRecorder();
 
     //Debug 
     DebugScreen screen;
+
+    //单例
+    private static World instance;
+
+    public static World GetInstance()
+    {
+        return instance;
+    }
+
     private void Start()
     {
-
+        if (instance != null)
+            Destroy(this);
+        else
+        {
+            instance = this;
+            WorldGenerate();
+        }
+            
+        
     }
 
     private void WorldGenerate()
@@ -53,7 +66,7 @@ public class World : MonoBehaviour, WorldObserver
         }
             
         GenerateCubes();
-        GenerateEnermys();
+        monsterRecorder.GenerateEnermys();
     }
 
     public Cube[,,] GetCubes()
@@ -71,7 +84,6 @@ public class World : MonoBehaviour, WorldObserver
             screen.Log("TAG", "out of world size");
             return;
         }
-            
 
         if (type == CubeType.Stone)
             cubes[x,y,z] = new Stone(pos, this);
@@ -83,15 +95,18 @@ public class World : MonoBehaviour, WorldObserver
 
     public List<MonsterData> GetMonsters()
     {
-        return monsters;
+        return monsterRecorder.GetMonsterDatas();
     }
 
     //添加MonsterData
     public void AddMonsterData(MonsterData monster)
     {
-        if (monsters == null)
-            monsters = new List<MonsterData>();
-        monsters.Add(monster);
+        monsterRecorder.AddMonster(monster);
+    }
+
+    public void DeleteMonster(Vector3 pos)
+    {
+        monsterRecorder.DeleteMonster(pos);
     }
 
     private bool OutOfBound(int x, int y, int z)
@@ -138,25 +153,15 @@ public class World : MonoBehaviour, WorldObserver
         worldHeight = data.worldHeight;
         spawnPos = data.GetSpawnPos();
         loadData = data.cubeDatas;
-        monsters = data.monsters;
-        //重置world
-        WorldGenerate();
+        monsterRecorder.LoadMonsterDatas(data.monsters);
     }
 
     public void Replay()
     {
-        DestroyMonsters();
+        //DestroyMonsters();
+        monsterRecorder.DestroyMonsters();
         DestroyCubes();
         WorldGenerate();
-    }
-
-    private void DestroyMonsters()
-    {
-        if (enermyList == null)
-            return;
-        foreach (EnermySubject e in enermyList)
-            e.Delete();
-        enermyList.Clear();
     }
 
     private void DestroyCubes()
@@ -182,18 +187,6 @@ public class World : MonoBehaviour, WorldObserver
         worldCenter = new Vector3(worldWidth / 2, 0 , worldWidth / 2);
         if(loadData == null)
             spawnPos = worldCenter;
-    }
-
-    private void GenerateEnermys()
-    {
-        if (monsters == null)
-            return;
-        foreach(MonsterData m in monsters)
-        {
-            if (m.GetMonsterType() == MonsterType.Breaker)
-                enermyList.Add(new Breaker(m.GetPos(),this));
-            //TODO: 其他怪物类型
-        }
     }
 
     private void GenerateCubes()
@@ -289,6 +282,6 @@ public class World : MonoBehaviour, WorldObserver
 
     public void AddEnermy(EnermySubject e)
     {
-        enermyList.Add(e);
+        monsterRecorder.AddEnermySubject(e);
     }
 }

@@ -15,6 +15,7 @@ public class Breaker : Monster, EnermySubject
     // 死后使地下的方块塌陷
     public Breaker(Vector3 pos,World world):base(pos)
     {
+        Debug.Log("world: " + world);
         //随机方向种子
         thisWorld = world;
         Random.InitState(0);

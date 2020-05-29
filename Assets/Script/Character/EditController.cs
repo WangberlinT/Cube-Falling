@@ -21,7 +21,7 @@ public class EditController : MonoBehaviour
     public Transform placeBlock;
     public GameObject playerModel;
     public GameObject enermyModelPrefab;
-    private GameObject enermyModel;
+    private GameObject enermyBuildModel;
 
     //------------View Control Private-------------
     private Transform camTrans;
@@ -124,6 +124,9 @@ public class EditController : MonoBehaviour
             //TODO: setMonster
             if (rightClick)
                 SetMonster((MonsterType)selectIndex);
+
+            if (leftClick)
+                BreakMonster();
         }
 
 
@@ -131,6 +134,73 @@ public class EditController : MonoBehaviour
 
         UpdatePrompt();
     }
+
+    private void placeCursorBlocks()
+    {
+        float step = 0.5f;
+        Ray ray = new Ray(camTrans.position, camTrans.forward);
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * selectDistance, Color.red);
+
+
+
+        RaycastHit hitt = new RaycastHit();
+        Physics.Raycast(ray, out hitt, selectDistance);
+
+        Vector3 endPos = ray.origin + ray.direction * selectDistance;
+
+        if (hitt.transform != null)
+        {
+            endPos = hitt.point;
+
+            Vector3 placePos = endPos - ray.direction * step;
+            placePos.x = Mathf.FloorToInt(placePos.x);
+            placePos.y = Mathf.FloorToInt(placePos.y);
+            placePos.z = Mathf.FloorToInt(placePos.z);
+            Vector3 breakPos = endPos + ray.direction * step;
+            breakPos.x = Mathf.FloorToInt(breakPos.x);
+            breakPos.y = Mathf.FloorToInt(breakPos.y);
+            breakPos.z = Mathf.FloorToInt(breakPos.z);
+
+            if (editMode == EditMode.CubeMode)
+            {
+                breakBlock.position = breakPos;
+                placeBlock.position = placePos;
+
+                breakBlock.gameObject.SetActive(true);
+                placeBlock.gameObject.SetActive(true);
+
+            }
+            else if (editMode == EditMode.PlayerMode)
+            {
+                playerModel.transform.position = endPos;
+                playerModel.gameObject.SetActive(true);
+                breakBlock.gameObject.SetActive(false);
+                placeBlock.gameObject.SetActive(false);
+            }
+            else if (editMode == EditMode.MonsterMode)
+            {
+                screen.Log("[MonsterEdit]", endPos.ToString());
+                //TODO: 获取实际大小
+                enermyBuildModel.transform.position = placePos + enermyPosOffset;
+                enermyBuildModel.SetActive(true);
+                breakBlock.position = breakPos;
+
+                breakBlock.gameObject.SetActive(true);
+            }
+
+        }
+        else
+        {
+            playerModel.gameObject.SetActive(false);
+            breakBlock.gameObject.SetActive(false);
+            placeBlock.gameObject.SetActive(false);
+            enermyBuildModel.SetActive(false);
+        }
+        string debugMessage = string.Format("End point: {0}", endPos);
+        screen.Log(TAG, debugMessage);
+        Debug.DrawLine(ray.origin, endPos, Color.red);
+    }
+
     private void SetPlayerPosition()
     {
         world.spawnPos = playerModel.transform.position;
@@ -141,23 +211,31 @@ public class EditController : MonoBehaviour
     private void SetMonster(MonsterType type)
     {
         Debug.Log("Set Monster");
-        Instantiate(enermyModel);
-        MonsterData data = new MonsterData(enermyModel.transform.position,type);
+        MonsterData data = new MonsterData(enermyBuildModel.transform.position,type);
         world.AddMonsterData(data);
+    }
+
+    private void BreakMonster()
+    {
+        Vector3 breakPos = breakBlock.position + enermyPosOffset;
+        world.DeleteMonster(breakPos);
     }
 
     private void InitMonsterModel()
     {
-        if (enermyModel == null)
-            enermyModel = Instantiate(enermyModelPrefab);
+        if (enermyBuildModel == null)
+        {
+            enermyBuildModel = Instantiate(enermyModelPrefab);
+        } 
         else
         {
-            Destroy(enermyModel);
-            enermyModel = Instantiate(enermyModelPrefab);
+            //切换模型
+            Destroy(enermyBuildModel);
+            enermyBuildModel = Instantiate(enermyModelPrefab);
         }
-        //只保留模型
-        Destroy(enermyModel.GetComponent<Rigidbody>());
-        Destroy(enermyModel.GetComponentInChildren<BoxCollider>());
+        //只保留模型去除物理组件
+        Destroy(enermyBuildModel.GetComponent<Rigidbody>());
+        Destroy(enermyBuildModel.GetComponentInChildren<BoxCollider>());
     }
     
 
@@ -213,71 +291,7 @@ public class EditController : MonoBehaviour
         transform.localEulerAngles = new Vector3(0, rotationY, 0);
         camTrans.localEulerAngles = new Vector3(rotationX, 0, 0);
     }
-    private void placeCursorBlocks()
-    {
-        float step = 0.5f;
-        Ray ray = new Ray(camTrans.position, camTrans.forward);
-        Debug.DrawLine(ray.origin, ray.origin + ray.direction * selectDistance, Color.red);
-
-
-
-        RaycastHit hitt = new RaycastHit();
-        Physics.Raycast(ray, out hitt, selectDistance);
-
-        Vector3 endPos = ray.origin + ray.direction * selectDistance;
-
-        if (hitt.transform != null)
-        {
-            endPos = hitt.point;
-
-            Vector3 placePos = endPos - ray.direction * step;
-            placePos.x = Mathf.FloorToInt(placePos.x);
-            placePos.y = Mathf.FloorToInt(placePos.y);
-            placePos.z = Mathf.FloorToInt(placePos.z);
-            Vector3 breakPos = endPos + ray.direction * step;
-            breakPos.x = Mathf.FloorToInt(breakPos.x);
-            breakPos.y = Mathf.FloorToInt(breakPos.y);
-            breakPos.z = Mathf.FloorToInt(breakPos.z);
-
-            if(editMode == EditMode.CubeMode)
-            {
-                breakBlock.position = breakPos;
-                placeBlock.position = placePos;
-
-                breakBlock.gameObject.SetActive(true);
-                placeBlock.gameObject.SetActive(true);
-                
-            }
-            else if(editMode == EditMode.PlayerMode)
-            {
-                playerModel.transform.position = endPos;
-                playerModel.gameObject.SetActive(true);
-                breakBlock.gameObject.SetActive(false);
-                placeBlock.gameObject.SetActive(false);
-            }
-            else if(editMode == EditMode.MonsterMode)
-            {
-                screen.Log("[MonsterEdit]", endPos.ToString());
-                //TODO: 获取实际大小
-                enermyModel.transform.position = placePos + enermyPosOffset;
-                enermyModel.SetActive(true);
-                breakBlock.gameObject.SetActive(false);
-                placeBlock.gameObject.SetActive(false);
-                
-            }
-            
-        }
-        else
-        {
-            playerModel.gameObject.SetActive(false);
-            breakBlock.gameObject.SetActive(false);
-            placeBlock.gameObject.SetActive(false);
-            enermyModel.SetActive(false);
-        }
-        string debugMessage = string.Format("End point: {0}", endPos);
-        screen.Log(TAG, debugMessage);
-        Debug.DrawLine(ray.origin, endPos, Color.red);
-    }
+    
 
     private void IncreaseEditMode(bool increase)
     {
