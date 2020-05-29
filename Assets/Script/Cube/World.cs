@@ -29,6 +29,7 @@ public class World : MonoBehaviour, WorldObserver
     //文件名
     private string name = "";
     //敌人记录
+
     private MonsterManager monsterRecorder = new MonsterManager();
 
     //Debug 
