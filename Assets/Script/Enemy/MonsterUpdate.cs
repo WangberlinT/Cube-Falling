@@ -31,7 +31,7 @@ public class MonsterUpdate : MonoBehaviour
             else
             {
                 // 死亡行为
-                //monster.OnDie();
+                monster.OnDie();
             }
         }
     }

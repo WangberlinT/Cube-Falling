@@ -63,7 +63,7 @@ public class Breaker : Monster
                 isMoving = false;
             }else
             {
-                Debug.Log("Moving");
+                //Debug.Log("Moving");
                 monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
                 this.SetPosition(monster.transform.localPosition);
             }
