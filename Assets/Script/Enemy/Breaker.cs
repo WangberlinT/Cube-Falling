@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Breaker : Monster, EnermySubject
+public class Breaker : Monster
 {
 
     public World thisWorld;     //World 对象
@@ -64,13 +64,13 @@ public class Breaker : Monster, EnermySubject
         }
     }
     // 创建
-    public void OnCreate()
+    public override void OnCreate()
     {
         thisWorld.AddEnermy(this);
         //throw new System.NotImplementedException();
     }
     // 死亡
-    public void OnDie()
+    public override void OnDie()
     {
         this.DeadAction();
         thisWorld.OnEnermyDie(this);
@@ -82,21 +82,6 @@ public class Breaker : Monster, EnermySubject
         throw new System.NotImplementedException();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //设定一个种子
-        
-        /*
-        GameObject[] cube;
-        cube = GameObject.FindGameObjectsWithTag("Cube");
-        foreach(GameObject c in cube)
-        {
-            Debug.Log(c.transform.position);
-        }
-        */
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -104,7 +89,7 @@ public class Breaker : Monster, EnermySubject
         if(health>0)
         {
             // 仇恨行为
-
+            Debug.Log("health existed!");
             //正常行为
             this.NormalAction();
         }else
@@ -119,7 +104,7 @@ public class Breaker : Monster, EnermySubject
     /*
      * Replay 的时候要清空world中的Monster
      */
-    public void Delete()
+    public override void Delete()
     {
         Object.Destroy(monster);
     }

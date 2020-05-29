@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Monster
+public abstract class Monster: EnermySubject
 {
     protected float moveSpeed = 0.01f;    // 移动速度
     protected float traceDepth = 5;    // 仇恨范围
@@ -24,6 +24,10 @@ public abstract class Monster
     public int GetHealth()
     {
         return health;
+    }
+    public void SetHealth(int h)
+    {
+        health = h;
     }
     public GameObject GetMonster()
     {
@@ -59,4 +63,10 @@ public abstract class Monster
                 return new Vector3(0, 0, 0);
         }
     }
+
+    public abstract void OnDie();
+
+    public abstract void OnCreate();
+
+    public abstract void Delete();
 }

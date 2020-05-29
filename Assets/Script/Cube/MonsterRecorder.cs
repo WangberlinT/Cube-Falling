@@ -5,7 +5,7 @@ using UnityEngine;
 /*
  * 管理World中的怪物
  */
-public class MonsterRecorder
+public class MonsterManager
 {
     //保存着Monster的记录信息
     private Dictionary<Vector3, MonsterData> monsterDatas = new Dictionary<Vector3, MonsterData>();
@@ -13,7 +13,7 @@ public class MonsterRecorder
     private Dictionary<Vector3, EnermySubject> enermys = new Dictionary<Vector3, EnermySubject>();
     private bool hasMonster;
 
-    public MonsterRecorder()
+    public MonsterManager()
     {
         hasMonster = false;
     }
@@ -99,8 +99,13 @@ public class MonsterRecorder
     private void EnermyFactory(MonsterData data)
     {
         Debug.Log("Enermy generate!" + data.GetPos());
+        Monster tmp;
         if (data.GetMonsterType() == MonsterType.Breaker)
-            new Breaker(data.GetPos(), World.GetInstance());
+        {
+            tmp = new Breaker(data.GetPos(), World.GetInstance());
+            tmp.GetMonster().AddComponent<MonsterUpdate>();
+            tmp.GetMonster().GetComponent<MonsterUpdate>().SetMonster(tmp);
+        }
     }
 
     
