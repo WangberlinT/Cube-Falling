@@ -8,9 +8,9 @@ public class Breaker : Monster
 
     public World thisWorld;     //World 对象
     // for Debug is public
-    private bool isMoving =false;   // 正在移动
     private Vector3 tar;        // 目标方向
     private Cube[,,] cubeIdx;   //Cube list
+    private int direction;
     // 死亡行为
     // 死后使地下的方块塌陷
     public Breaker(Vector3 pos,World world):base(pos)
@@ -25,8 +25,10 @@ public class Breaker : Monster
         traceDepth = 5;
         health = 1;
         monster = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker));
+        monsterAni = monster.GetComponent<Animator>();
         monster.transform.position = pos;
         this.OnCreate();
+
     }
 
     
@@ -40,30 +42,39 @@ public class Breaker : Monster
     // 随机向一个方向走一格
     public override void NormalAction()
     {
-        //Debug.Log(isMoving);
-//        tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
-        
-        if(!isMoving)
+        //没有移动时 开始移动
+        if(!isMoving&&!isRotating)
         {
             int index = 0;
-            isMoving = true;
             do{
-                tar = RandomDirection(Random.Range(0, 4)) + this.GetPosition();
+                direction = Random.Range(0, 4);
+                tar = RandomDirection(direction) + this.GetPosition();
                 index++;
-            }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index<5);
-            //this.SetPosition( Vector3.MoveTowards(this.GetPosition(), tar, Time.deltaTime * moveSpeed));
-            monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
-            this.SetPosition(monster.transform.localPosition);
+            }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index < 5);
+            //根据随机设置方向index
+            //转入旋转等待
+            this.SetFace(direction);
+            this.SetTime(0);
+            this.SetRotating(true);
+        }
+        else if(isRotating)
+        {
+            this.RotatePause(15);
         }
         else
         {
-            
-            if (tar == this.GetPosition())
+            //如果旋转完成
+            //Debug.Log(Vector3.Distance(tar, this.GetPosition()));
+            if (Vector3.Distance(tar, this.GetPosition()) < 0.02) 
             {
-                isMoving = false;
-            }else
+                this.SetMoving(false);
+                this.GetAnimator().SetBool("isMoving", false);
+            }
+            else
             {
-                //Debug.Log("Moving");
+                // 执行moving动画
+                //移动
+                this.GetAnimator().SetBool("isMoving", true);
                 monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
                 this.SetPosition(monster.transform.localPosition);
             }
