@@ -35,6 +35,8 @@ public class Breaker : Monster
     public override void DeadAction()
     {
         //播放死亡动画
+        this.GetAnimator().SetBool("isDead", true);
+        this.SetDead(true);
         throw new System.NotImplementedException();
     }
     // 获得位置

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Monster: EnermySubject
 {
     protected bool isPaused = false;    // 是否禁用
+    protected bool isDead = false;      //是否死亡
     protected bool isMoving = false;   // 正在移动
     protected bool isRotating = false; // 正在旋转
     protected float timestamp;          //旋转时间戳
@@ -27,6 +28,14 @@ public abstract class Monster: EnermySubject
     public void SetPaused(bool pause)
     {
         isPaused = pause;
+    }
+    public bool GetDead()
+    {
+        return isDead;
+    }
+    public void SetDead(bool dead)
+    {
+        isDead = dead;
     }
     public bool GetMoving()
     {
@@ -114,30 +123,6 @@ public abstract class Monster: EnermySubject
             default:
                 return new Vector3(0, 0, 0);
         }
-    }
-    //改变朝向
-    public void ChangeFace(int i)
-    {
-        
-        switch (i)
-        {
-            case 0:
-                
-                break;
-            case 1:
-                
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-            default:
-                
-                break;
-        }
-        
     }
     // 旋转等待时间
     public void RotatePause(int waitTime)
