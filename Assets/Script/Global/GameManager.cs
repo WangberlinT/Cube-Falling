@@ -67,6 +67,12 @@ public class GameManager : MonoBehaviour
         world.Replay();
     }
 
+    public void Win()
+    {
+        settingMenu.WinPrompt();
+        UpdateSettingMenu();
+    }
+
     public void SaveWorld()
     {
         world.SaveWorld();

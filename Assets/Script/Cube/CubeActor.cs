@@ -9,9 +9,23 @@ using UnityEngine;
 public class CubeActor : MonoBehaviour
 {
     private bool isDestorying = false;
+    
+
+    public void DelayToFall(float time, Cube cube)
+    {
+        StartCoroutine(FallTimer(time, cube));
+    }
+
+    //重构
+    private IEnumerator FallTimer(float time, Cube temp)
+    {
+        yield return new WaitForSeconds(time);
+        temp.FallDown();
+    }
+
     private IEnumerator DestoryFallingCube()
     {
-        while(transform.position.y > CubeConstant.vanishingYPlane)
+        while (transform.position.y > CubeConstant.vanishingYPlane)
         {
             yield return new WaitForSeconds(CubeConstant.checkInterval);
         }

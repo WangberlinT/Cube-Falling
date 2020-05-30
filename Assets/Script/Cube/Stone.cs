@@ -19,10 +19,20 @@ public class Stone : Cube
         actor = cube.GetComponent<CubeActor>();
     }
 
+    public override void DelayToFall()
+    {
+        if (cube != null)
+            actor.DelayToFall(delay, this);
+    }
+
     public override void Disappear()
     {
-        //TODO: 播放动画
-        actor.DestoryCube();
+        if(cube != null)
+        {
+            //TODO: 播放动画
+            actor.DestoryCube();
+        }
+        
     }
 
     public override void FallDown()
@@ -34,8 +44,8 @@ public class Stone : Cube
             rigidbody.isKinematic = false;
             world.FallAround(initPos,false,delay);
             actor.CheckToDestory();
-            world.DecreaseCubeCount();
-            world.CheckWin();
+            world.GetCubeManager().DecreaseCubeCount();
+            world.GetCubeManager().CheckWin();
         }
         
     }

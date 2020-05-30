@@ -5,10 +5,13 @@ using UnityEngine;
 public class SettingMenu : MonoBehaviour
 {
     private GameObject settingMenu;
+    private GameObject winText;
 
     private void Start()
     {
         settingMenu = GameObject.Find("SettingCavas");
+        winText = GameObject.Find("Win");
+        winText.SetActive(false);
         settingMenu.SetActive(false);
     }
 
@@ -24,7 +27,6 @@ public class SettingMenu : MonoBehaviour
 
     public void Replay()
     {
-        Debug.Log("Click");
         GameManager.GetInstance().Replay();
         GameManager.GetInstance().UpdateSettingMenu();
     }
@@ -45,5 +47,11 @@ public class SettingMenu : MonoBehaviour
     {
         //TODO: 弹出提示框
         Application.Quit();
+    }
+
+    public void WinPrompt()
+    {
+        Debug.Log("Win");
+        winText.SetActive(true);
     }
 }

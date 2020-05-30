@@ -34,9 +34,3 @@ public class CubeData
     }
 }
 
-public enum CubeType
-{
-    Air,Stone, Sand,Ice,
-    //length of cube type
-    Length
-}
