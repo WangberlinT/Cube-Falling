@@ -19,6 +19,11 @@ public class Stone : Cube
         actor = cube.GetComponent<CubeActor>();
     }
 
+    public override void DelayToFall()
+    {
+        actor.DelayToFall(delay, this);
+    }
+
     public override void Disappear()
     {
         //TODO: 播放动画

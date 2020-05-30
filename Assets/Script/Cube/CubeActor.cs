@@ -18,6 +18,18 @@ public class CubeActor : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void DelayToFall(float time, Cube cube)
+    {
+        StartCoroutine(FallTimer(time, cube));
+    }
+
+    //重构
+    private IEnumerator FallTimer(float time, Cube temp)
+    {
+        yield return new WaitForSeconds(time);
+        temp.FallDown();
+    }
+
     public void CheckToDestory()
     {
         if(!isDestorying)

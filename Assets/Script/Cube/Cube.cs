@@ -63,6 +63,11 @@ public abstract class Cube
      * 除了云方块，其他方块在世界中触发FallAround事件
      */
     public abstract void FallDown();
+
+    /*
+     * 触发延迟坠落
+     */
+    public abstract void DelayToFall();
     /*
      * 销毁方块的接口
      */
