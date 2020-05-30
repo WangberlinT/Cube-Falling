@@ -29,6 +29,7 @@ public class PlayerControl : MonoBehaviour
     private bool isJump = false;
     private bool isRunning = false;
     private PlayerAnimator animatorControl;
+    //------组件---------
     public AudioSource audioSource;
     public Canvas Fail_Canvas;
     private void Start()
@@ -165,5 +166,17 @@ public class PlayerControl : MonoBehaviour
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         contact = hit;//简单的绑定作用
+        GameObject hitObject = hit.gameObject;
+        if(hitObject.name.Equals("Cube"))//如果碰撞到的物体为monster(二羊出来挨打，神他妈monster的名字是cube
+        {
+            Vector3 player_postion = transform.position;
+            Vector3 monster_position = hitObject.transform.position;
+            if(player_postion.z-monster_position.z>0.1f)
+                Destroy(hitObject);
+            else
+                Fail_Canvas.enabled = true;
+            // Debug.Log("Monster: "+hitObject.transform.position);
+            // Debug.Log("Player: "+transform.position);
+        }
     }
 }

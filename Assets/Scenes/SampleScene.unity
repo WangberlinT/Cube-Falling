@@ -1054,6 +1054,7 @@ MonoBehaviour:
   ground_offset: 0
   audioSource: {fileID: 1308478237}
   Fail_Canvas: {fileID: 387931183}
+  Win_Canvas: {fileID: 1418175121}
 --- !u!82 &1308478237
 AudioSource:
   m_ObjectHideFlags: 0
