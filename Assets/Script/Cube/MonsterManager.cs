@@ -7,15 +7,17 @@ using UnityEngine;
  */
 public class MonsterManager
 {
+    private World world;
     //保存着Monster的记录信息
     private Dictionary<Vector3, MonsterData> monsterDatas = new Dictionary<Vector3, MonsterData>();
     //保存着EnermySubject
     private Dictionary<Vector3, EnermySubject> enermys = new Dictionary<Vector3, EnermySubject>();
     private bool hasMonster;
 
-    public MonsterManager()
+    public MonsterManager(World world)
     {
         hasMonster = false;
+        this.world = world;
     }
 
     /*
@@ -102,7 +104,7 @@ public class MonsterManager
         Monster tmp;
         if (data.GetMonsterType() == MonsterType.Breaker)
         {
-            tmp = new Breaker(data.GetPos(), World.GetInstance());
+            tmp = new Breaker(data.GetPos(), world);
             tmp.GetMonster().AddComponent<MonsterUpdate>();
             tmp.GetMonster().GetComponent<MonsterUpdate>().SetMonster(tmp);
         }

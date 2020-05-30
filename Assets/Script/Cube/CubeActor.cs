@@ -9,14 +9,7 @@ using UnityEngine;
 public class CubeActor : MonoBehaviour
 {
     private bool isDestorying = false;
-    private IEnumerator DestoryFallingCube()
-    {
-        while(transform.position.y > CubeConstant.vanishingYPlane)
-        {
-            yield return new WaitForSeconds(CubeConstant.checkInterval);
-        }
-        Destroy(gameObject);
-    }
+    
 
     public void DelayToFall(float time, Cube cube)
     {
@@ -28,6 +21,15 @@ public class CubeActor : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         temp.FallDown();
+    }
+
+    private IEnumerator DestoryFallingCube()
+    {
+        while (transform.position.y > CubeConstant.vanishingYPlane)
+        {
+            yield return new WaitForSeconds(CubeConstant.checkInterval);
+        }
+        Destroy(gameObject);
     }
 
     public void CheckToDestory()

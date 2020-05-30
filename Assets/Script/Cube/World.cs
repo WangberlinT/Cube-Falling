@@ -18,10 +18,6 @@ public class World : MonoBehaviour, WorldObserver
     public Vector3 spawnPos;
     //玩家出生点(单人游戏中保证唯一性)
     public GameObject player;
-    //记录世界中每个点的cube对象
-    //private Cube[,,] cubes;
-    //从存档导入的cube data，如果为空则未导入任何地图TODO: 重构为cubeManager
-    //private CubeData[,,] loadData;
     //记录管理Cube
     private CubeManager cubeManager;
     //DEBUG 标签
@@ -29,13 +25,7 @@ public class World : MonoBehaviour, WorldObserver
     //文件名
     private string name = "";
     //敌人记录
-
-    private MonsterManager monsterManager = new MonsterManager();
-
-    //Debug 
-    DebugScreen screen;
-    //记录方块数量
-    private int cubeCount;
+    private MonsterManager monsterManager;
 
     //单例
     private static World instance;
@@ -53,15 +43,11 @@ public class World : MonoBehaviour, WorldObserver
         else
         {
             instance = this;
-        }
-            
-        
+        }   
     }
 
     private void WorldGenerate()
     {
-        //重构
-        //cubes = new Cube[worldWidth, worldHeight, worldWidth];
         if(player != null)
         {
             player.SetActive(false);
@@ -96,18 +82,30 @@ public class World : MonoBehaviour, WorldObserver
         WorldGenerate();
     }
     private void InitSetting(WorldData data)
-    {
-        screen = DebugScreen.GetInstance();
-       
+    {  
         worldWidth = data.worldWidth;
         worldHeight = data.worldHeight;
         spawnPos = data.GetSpawnPos();
         cubeManager = new CubeManager(this);
-        monsterManager = new MonsterManager();
-        //重构loadData
-        //loadData = data.cubeDatas;
+        monsterManager = new MonsterManager(this);
         cubeManager.LoadCubeDatas(data.cubeDatas);
         monsterManager.LoadMonsterDatas(data.monsters);
+    }
+
+    /*
+     * 获取CubeManager
+     */
+    public CubeManager GetCubeManager()
+    {
+        return cubeManager;
+    }
+
+    /*
+     * 获取MosterManager
+     */
+    public MonsterManager GetMonsterManager()
+    {
+        return monsterManager;
     }
 
     /*
@@ -139,22 +137,6 @@ public class World : MonoBehaviour, WorldObserver
      */
     public void SetCube(Vector3 pos, CubeType type)
     {
-        //重构
-        //int x = (int)pos.x;
-        //int y = (int)pos.y;
-        //int z = (int)pos.z;
-        //if (x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth)
-        //{
-        //    screen.Log("TAG", "out of world size");
-        //    return;
-        //}
-
-        //if (type == CubeType.Stone)
-        //    cubes[x, y, z] = new Stone(pos, this);
-        //else if (type == CubeType.Sand)
-        //    cubes[x, y, z] = new Sand(pos, this);
-        //else if (type == CubeType.Ice)
-        //    cubes[x, y, z] = new Ice(pos, this);
         cubeManager.SetCube(pos, type);
     }
 
@@ -164,47 +146,9 @@ public class World : MonoBehaviour, WorldObserver
      */
     public void BreakBlock(Vector3 pos)
     {
-        //重构
-        //int x = (int)pos.x;
-        //int y = (int)pos.y;
-        //int z = (int)pos.z;
-        //if (OutOfBound(x, y, z))
-        //{
-        //    screen.Log("TAG", "out of world size");
-        //    return;
-        //}
-        //if (cubes[x, y, z] != null)
-        //{
-        //    cubes[x, y, z].Disappear();
-        //    cubes[x, y, z] = null;
-        //}
         cubeManager.BreakBlock(pos);
     }
-    //Finished
-    public void DecreaseCubeCount()
-    {
-        //cubeCount--;
-        cubeManager.DecreaseCubeCount();
-        screen.Log("[CubeCount]", cubeCount.ToString());
-    }
 
-    //Finished
-    private void DestroyCubes()
-    {
-        //if (cubes == null)
-        //    return;
-        //for (int x = 0; x < worldWidth; x++)
-        //{
-        //    for (int y = 0; y < worldHeight; y++)
-        //    {
-        //        for (int z = 0; z < worldWidth; z++)
-        //        {
-        //            if (cubes[x, y, z] != null)
-        //                Destroy(cubes[x, y, z].GetCubeObject());
-        //        }
-        //    }
-        //}
-    }
 
     /*
      * FInished
@@ -215,39 +159,6 @@ public class World : MonoBehaviour, WorldObserver
     public void FallAround(Vector3 diePos, bool isDie, float time = 0)
     {
         cubeManager.FallAround(diePos, isDie, time);
-        //Vector3Int[] offset =  { new Vector3Int( 0, 1, 0 ), new Vector3Int( 0, -1, 0 ),
-        //                         new Vector3Int( -1, 0, 0 ), new Vector3Int( 1, 0, 0 ),
-        //                         new Vector3Int( 0, 0, 1 ), new Vector3Int( 0, 0, -1 )};
-
-        //int x = Mathf.FloorToInt(diePos.x);
-        //int y = Mathf.FloorToInt(diePos.y);
-        //int z = Mathf.FloorToInt(diePos.z);
-
-        //for (int i = 0; i < offset.Length; i++)
-        //{
-        //    Vector3Int pos = new Vector3Int(x, y, z);
-        //    pos += offset[i];
-        //    if (!OutOfBound(pos.x, pos.y, pos.z))
-        //    {
-        //        Cube temp = cubes[pos.x, pos.y, pos.z];
-        //        if (temp != null)
-        //        {
-        //            if (isDie)
-        //            {
-        //                temp.FallDown();
-        //            }
-        //            else
-        //            {
-        //                if (temp.GetChainable())
-        //                {
-        //                    if (time != 0)
-        //                        StartCoroutine(FallTimer(time, temp));
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //}
     }
 
     /*
@@ -270,36 +181,7 @@ public class World : MonoBehaviour, WorldObserver
     {
         monsterManager.DeleteMonster(pos);
     }
-    
 
-    private bool OutOfBound(int x, int y, int z)
-    {
-        return x < 0 || x >= worldWidth || y < 0 || y >= worldHeight || z < 0 || z >= worldWidth;
-    }
-
-    
-    
-
-    /*
-     * Finished
-     * 检查游戏胜利条件
-     */
-    public void CheckWin()
-    {
-        if (cubeCount == 0)
-            Win();
-    }
-
-    public void Win()
-    {
-        Debug.Log("Win");
-    }
-
-    
-
-    
-
-    
     /*
      * 怪物死亡时触发死亡位置的陷落事件
      */

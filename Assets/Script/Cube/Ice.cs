@@ -14,17 +14,22 @@ public class Ice : Cube
         rigidbody = cube.GetComponent<Rigidbody>();
         cube.AddComponent<CubeActor>();
         actor = cube.GetComponent<CubeActor>();
+        chainAble = true;
     }
 
     public override void DelayToFall()
     {
-        actor.DelayToFall(delay, this);
+        if(!isFalling)
+            actor.DelayToFall(delay, this);
     }
 
     public override void Disappear()
     {
-        //TODO: 播放动画
-        actor.DestoryCube();
+        if (cube != null)
+        {
+            //TODO: 播放动画
+            actor.DestoryCube();
+        }
     }
 
     public override void FallDown()
@@ -36,8 +41,8 @@ public class Ice : Cube
             rigidbody.isKinematic = false;
             world.FallAround(initPos, false, delay);
             actor.CheckToDestory();
-            world.DecreaseCubeCount();
-            world.CheckWin();
+            world.GetCubeManager().DecreaseCubeCount();
+            world.GetCubeManager().CheckWin();
         }
 
     }

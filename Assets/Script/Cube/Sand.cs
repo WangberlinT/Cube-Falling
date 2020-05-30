@@ -19,13 +19,17 @@ public class Sand : Cube
 
     public override void DelayToFall()
     {
-        actor.DelayToFall(delay, this);
+        if(cube != null)
+            actor.DelayToFall(delay, this);
     }
 
     public override void Disappear()
     {
-        //TODO: 播放动画
-        actor.DestoryCube();
+        if (cube != null)
+        {
+            //TODO: 播放动画
+            actor.DestoryCube();
+        }
     }
 
     public override void FallDown()
@@ -37,8 +41,8 @@ public class Sand : Cube
             rigidbody.isKinematic = false;
             world.FallAround(initPos,false,delay);
             actor.CheckToDestory();
-            world.DecreaseCubeCount();
-            world.CheckWin();
+            world.GetCubeManager().DecreaseCubeCount();
+            world.GetCubeManager().CheckWin();
         }
         
     }
