@@ -173,7 +173,9 @@ public class PlayerControl : MonoBehaviour
             Vector3 player_postion = transform.position;
             Vector3 monster_position = hitObject.transform.position;
             if(player_postion.y-monster_position.y>0.5f){
-                world.GetComponent<World>().FallAround(monster_position,true);//触发陷落
+                world.GetComponent<World>().FallAround(monster_position,true,0.5f);//触发陷落
+                animatorControl.Jump();
+                verticalSpeed = jumpSpeed;
                 Destroy(hitObject);
             }else{
                 Fail_Canvas.enabled = true;
