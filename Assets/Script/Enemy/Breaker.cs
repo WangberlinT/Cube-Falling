@@ -50,6 +50,7 @@ public class Breaker : Monster
             int index = 0;
             do{
                 direction = Random.Range(0, 4);
+                //寻找一个没有怪物的方块
                 tar = RandomDirection(direction) + this.GetPosition();
                 index++;
             }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index < 5);
