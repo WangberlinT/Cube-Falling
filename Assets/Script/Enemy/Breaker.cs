@@ -50,7 +50,9 @@ public class Breaker : Monster
             int index = 0;
             do{
                 direction = Random.Range(0, 4);
-                //寻找一个没有怪物的方块
+                //寻找一个没有怪物的方块,防止碰撞
+                if (thisWorld.GetComponent<MonsterManager>().FindConflict(RandomDirection(direction) + this.GetPosition()))
+                    continue;
                 tar = RandomDirection(direction) + this.GetPosition();
                 index++;
             }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index < 5);
@@ -63,13 +65,16 @@ public class Breaker : Monster
         else if(isRotating)
         {
             this.RotatePause(15);
+            this.SetPosition(tar);
         }
         else
         {
             //如果旋转完成
             //Debug.Log(Vector3.Distance(tar, this.GetPosition()));
-            if (Vector3.Distance(tar, this.GetPosition()) < 0.02) 
+            Debug.Log(Vector3.Distance(tar, monster.transform.localPosition));
+            if (Vector3.Distance(tar, monster.transform.localPosition) < 0.025) 
             {
+                monster.transform.Translate(Vector3.Distance(tar, monster.transform.localPosition) * RandomDirection(direction));
                 this.SetMoving(false);
                 this.GetAnimator().SetBool("isMoving", false);
             }
@@ -79,7 +84,6 @@ public class Breaker : Monster
                 //移动
                 this.GetAnimator().SetBool("isMoving", true);
                 monster.transform.localPosition = Vector3.MoveTowards(monster.transform.localPosition, tar, Time.deltaTime * moveSpeed);
-                this.SetPosition(monster.transform.localPosition);
             }
         }
         
@@ -95,7 +99,6 @@ public class Breaker : Monster
     {
         this.DeadAction();
         thisWorld.OnEnermyDie(this);
-        throw new System.NotImplementedException();
     }
     // 追踪行为
     public override void TraceAction()
@@ -107,6 +110,8 @@ public class Breaker : Monster
     void FixedUpdate()
     {
         // this.Invoke("NormalAction", 1000);
+        if (this.GetPaused())
+            return;
         if(health>0)
         {
             // 仇恨行为
