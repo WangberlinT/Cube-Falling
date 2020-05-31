@@ -1055,6 +1055,8 @@ MonoBehaviour:
   ground_offset: 0
   audioSource: {fileID: 1308478237}
   Fail_Canvas: {fileID: 387931183}
+  world: {fileID: 1818641211}
+  Player: {fileID: 1308478234}
 --- !u!82 &1308478237
 AudioSource:
   m_ObjectHideFlags: 0

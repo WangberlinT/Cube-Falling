@@ -32,6 +32,7 @@ public class PlayerControl : MonoBehaviour
     //------组件---------
     public AudioSource audioSource;
     public Canvas Fail_Canvas;
+    public GameObject world;
     private void Start()
     {
         animatorControl = GetComponent<PlayerAnimator>();
@@ -167,16 +168,17 @@ public class PlayerControl : MonoBehaviour
     {
         contact = hit;//简单的绑定作用
         GameObject hitObject = hit.gameObject;
-        if(hitObject.name.Equals("Breaker(Clone)"))//如果碰撞到的物体为monster(二羊出来挨打，神他妈monster的名字是cube
+        if(hitObject.name.Equals("Breaker(Clone)"))//如果碰撞到的物体为monster
         {
             Vector3 player_postion = transform.position;
             Vector3 monster_position = hitObject.transform.position;
-            if(player_postion.y-monster_position.y>0.5f)
+            if(player_postion.y-monster_position.y>0.5f){
+                world.GetComponent<World>().FallAround(monster_position,true);//触发陷落
                 Destroy(hitObject);
-            else
+            }else{
                 Fail_Canvas.enabled = true;
-            // Debug.Log("Monster: "+hitObject.transform.position);
-            // Debug.Log("Player: "+transform.position);
+            }
+                
         }
     }
 }
