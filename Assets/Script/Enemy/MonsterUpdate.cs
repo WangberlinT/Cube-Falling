@@ -15,6 +15,7 @@ public class MonsterUpdate : MonoBehaviour
     void Dead()
     {
         monster.OnDie();
+        Destroy(this.monster.GetMonster());
     }
     void FixedUpdate()
     {
@@ -35,7 +36,8 @@ public class MonsterUpdate : MonoBehaviour
             {
                 //延时
                 this.monster.DeadAction();
-                this.Invoke("Dead", 0.5f);
+                
+                this.Invoke("Dead", 0.7f);
             }
         }
     }
