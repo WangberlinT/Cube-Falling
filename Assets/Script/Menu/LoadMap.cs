@@ -66,12 +66,14 @@ public class LoadMap : MonoBehaviour
     public void StartGame()
     {
         GameManager.SetWorldMap(mapSelected);
+        GameManager.SetGameMode(GameMode.SinglePlayer);
         SceneManager.LoadScene(GameManager.MainScene);
     }
 
     public void Edit()
     {
         GameManager.SetWorldMap(mapSelected);
+        GameManager.SetGameMode(GameMode.EditMode);
         SceneManager.LoadScene(GameManager.EditScene);
     }
 

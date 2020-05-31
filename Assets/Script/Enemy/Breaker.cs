@@ -51,7 +51,7 @@ public class Breaker : Monster
             do{
                 direction = Random.Range(0, 4);
                 //寻找一个没有怪物的方块,防止碰撞
-                if (thisWorld.GetComponent<MonsterManager>().FindConflict(RandomDirection(direction) + this.GetPosition()))
+                if (thisWorld.GetMonsterManager().FindConflict(RandomDirection(direction) + this.GetPosition()))
                     continue;
                 tar = RandomDirection(direction) + this.GetPosition();
                 index++;
@@ -71,7 +71,7 @@ public class Breaker : Monster
         {
             //如果旋转完成
             //Debug.Log(Vector3.Distance(tar, this.GetPosition()));
-            Debug.Log(Vector3.Distance(tar, monster.transform.localPosition));
+            //Debug.Log(Vector3.Distance(tar, monster.transform.localPosition));
             if (Vector3.Distance(tar, monster.transform.localPosition) < 0.025) 
             {
                 monster.transform.Translate(Vector3.Distance(tar, monster.transform.localPosition) * RandomDirection(direction));

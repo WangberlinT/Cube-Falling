@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private static string mapSelected;//TODO: set 默认地图
     private static GameManager instance;
     private InputController inputController;
+    private static GameMode gameMode;
    
 
     //Debug
@@ -57,6 +58,17 @@ public class GameManager : MonoBehaviour
     {
         return instance;
     }
+
+    public static void SetGameMode(GameMode mode)
+    {
+        gameMode = mode;
+    }
+
+    public static GameMode GetGameMode()
+    {
+        return gameMode;
+    }
+
 
     public static void SetWorldMap(string map)
     {
@@ -133,4 +145,9 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(Menu);
     }
+}
+
+public enum GameMode
+{
+    SinglePlayer,EditMode
 }

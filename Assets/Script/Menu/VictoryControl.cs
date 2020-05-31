@@ -8,7 +8,7 @@ public class VictoryControl : MonoBehaviour
     public Canvas Fail_Canvas;
     void Awake()
     {
-        Win_Canvas.enabled = false;
+        //Win_Canvas.enabled = false;
         Fail_Canvas.enabled = false;
     }
 

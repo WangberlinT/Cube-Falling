@@ -27,7 +27,8 @@ public class MonsterManager
     {
         //TODO: 处理异常
         monsterDatas.Add(data.GetPos(), data);
-        EnermyFactory(data);
+        //设置其为暂停状态
+        EnermyFactory(data,true);
     }
     public void DeleteMonster(Vector3 pos)
     {
@@ -65,12 +66,16 @@ public class MonsterManager
     }
     public void GenerateEnermys()
     {
+        Debug.Log(GameManager.GetGameMode());
         if (hasMonster)
         {
             Debug.Log("monsterDatas size: "+monsterDatas.Values.Count);
             foreach (MonsterData m in monsterDatas.Values)
             {
-                EnermyFactory(m);
+                if (GameManager.GetGameMode() == GameMode.SinglePlayer)
+                    EnermyFactory(m, false);
+                else if (GameManager.GetGameMode() == GameMode.EditMode)
+                    EnermyFactory(m, true);
             }
         }
     }
@@ -103,7 +108,7 @@ public class MonsterManager
             
     }
 
-    private void EnermyFactory(MonsterData data)
+    private void EnermyFactory(MonsterData data,bool isPause)
     {
         Debug.Log("Enermy generate!" + data.GetPos());
         Monster tmp;
@@ -112,6 +117,7 @@ public class MonsterManager
             tmp = new Breaker(data.GetPos(), world);
             tmp.GetMonster().AddComponent<MonsterUpdate>();
             tmp.GetMonster().GetComponent<MonsterUpdate>().SetMonster(tmp);
+            tmp.SetPaused(isPause);
         }
     }
 
