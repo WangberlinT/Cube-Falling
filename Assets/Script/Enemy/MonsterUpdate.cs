@@ -21,6 +21,8 @@ public class MonsterUpdate : MonoBehaviour
         
         if (monster!=null)
         {
+            if (monster.GetPaused())
+                return;
             if (monster.GetHealth() > 0)
             {
                 // 仇恨行为
@@ -30,9 +32,9 @@ public class MonsterUpdate : MonoBehaviour
             }
             else
             {
-                // 死亡行为
                 monster.OnDie();
             }
         }
     }
+
 }

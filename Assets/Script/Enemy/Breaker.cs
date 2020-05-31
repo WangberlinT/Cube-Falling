@@ -37,7 +37,6 @@ public class Breaker : Monster
         //播放死亡动画
         this.GetAnimator().SetBool("isDead", true);
         this.SetDead(true);
-        throw new System.NotImplementedException();
     }
     // 获得位置
     // 正常行为
@@ -104,26 +103,6 @@ public class Breaker : Monster
     public override void TraceAction()
     {
         throw new System.NotImplementedException();
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        // this.Invoke("NormalAction", 1000);
-        if (this.GetPaused())
-            return;
-        if(health>0)
-        {
-            // 仇恨行为
-            Debug.Log("health existed!");
-            //正常行为
-            this.NormalAction();
-        }else
-        {
-            // 死亡行为
-            OnDie();
-        }
-
     }
 
     
