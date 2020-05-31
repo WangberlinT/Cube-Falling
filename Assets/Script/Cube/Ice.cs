@@ -9,7 +9,7 @@ public class Ice : Cube
     public Ice(Vector3 pos, World world):base(pos)
     {
         this.world = world;
-        cube = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Ice));
+        cube = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Ice).GetGameObject());
         cube.transform.position = pos;
         rigidbody = cube.GetComponent<Rigidbody>();
         cube.AddComponent<CubeActor>();

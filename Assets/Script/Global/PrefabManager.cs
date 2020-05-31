@@ -14,7 +14,7 @@ public class PrefabManager : MonoBehaviour
 {
 
     //记录world中使用的prefab，方便生成物体(方块)
-    public Dictionary<PrefabType, GameObject> prefabs = new Dictionary<PrefabType, GameObject>();
+    public Dictionary<PrefabType, PrefabObject> prefabs = new Dictionary<PrefabType, PrefabObject>();
 
     private static PrefabManager instance;
 
@@ -33,7 +33,7 @@ public class PrefabManager : MonoBehaviour
     /*
      * 获取方块prefab
      */
-    public GameObject GetPrefab(PrefabType type)
+    public PrefabObject GetPrefab(PrefabType type)
     {
         if (prefabs[type] != null)
             return prefabs[type];
@@ -41,7 +41,7 @@ public class PrefabManager : MonoBehaviour
             throw new System.Exception("no this prefab");
     }
 
-    public GameObject GetPrefabByMonsterType(MonsterType type)
+    public PrefabObject GetPrefabByMonsterType(MonsterType type)
     {
         if (type == MonsterType.Breaker)
             return GetPrefab(PrefabType.Breaker);
@@ -51,9 +51,9 @@ public class PrefabManager : MonoBehaviour
 
     private void LoadPrefab()
     {
-        prefabs[PrefabType.Stone] = (GameObject)Resources.Load("Prefabs/Cubes/Stone", typeof(GameObject));
-        prefabs[PrefabType.Sand] = (GameObject)Resources.Load("Prefabs/Cubes/Sand", typeof(GameObject));
-        prefabs[PrefabType.Breaker] = (GameObject)Resources.Load("Prefabs/Enermy/Breaker", typeof(GameObject));
-        prefabs[PrefabType.Ice] = (GameObject)Resources.Load("Prefabs/Cubes/Ice", typeof(GameObject));
+        prefabs[PrefabType.Stone] = new StonePrefab((GameObject)Resources.Load("Prefabs/Cubes/Stone", typeof(GameObject)));
+        prefabs[PrefabType.Sand] = new SandPrefab((GameObject)Resources.Load("Prefabs/Cubes/Sand", typeof(GameObject)));
+        prefabs[PrefabType.Breaker] = new BreakerPrefab((GameObject)Resources.Load("Prefabs/Enermy/Breaker", typeof(GameObject)));
+        prefabs[PrefabType.Ice] = new IcePrefab((GameObject)Resources.Load("Prefabs/Cubes/Ice", typeof(GameObject)));
     }
 }

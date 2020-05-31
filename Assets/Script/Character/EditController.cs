@@ -20,7 +20,7 @@ public class EditController : MonoBehaviour
     public Transform breakBlock;
     public Transform placeBlock;
     public GameObject playerModel;
-    public GameObject enermyModelPrefab;
+    public PrefabObject enermyModelPrefab;
     private GameObject enermyBuildModel;
 
     //------------View Control Private-------------
@@ -225,17 +225,14 @@ public class EditController : MonoBehaviour
     {
         if (enermyBuildModel == null)
         {
-            enermyBuildModel = Instantiate(enermyModelPrefab);
+            enermyBuildModel = enermyModelPrefab.GetPlaceModel();
         } 
         else
         {
             //切换模型
             Destroy(enermyBuildModel);
-            enermyBuildModel = Instantiate(enermyModelPrefab);
+            enermyBuildModel = enermyModelPrefab.GetPlaceModel();
         }
-        //只保留模型去除物理组件
-        Destroy(enermyBuildModel.GetComponent<Rigidbody>());
-        Destroy(enermyBuildModel.GetComponentInChildren<BoxCollider>());
     }
     
 

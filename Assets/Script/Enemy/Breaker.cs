@@ -24,7 +24,7 @@ public class Breaker : Monster
         moveSpeed = 0.2f;
         traceDepth = 5;
         health = 1;
-        monster = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker));
+        monster = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker).GetGameObject());
         monsterAni = monster.GetComponent<Animator>();
         monster.transform.position = pos;
         this.OnCreate();

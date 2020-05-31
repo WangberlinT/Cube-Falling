@@ -93,7 +93,6 @@ public class MonsterManager
         monsters.Add(e.GetPosition(), e);
     }
 
-    //TODO: 修改为遍历的实现
     public void DeleteMonsterSubject(MonsterSubject e)
     {
         foreach(KeyValuePair<Vector3,MonsterSubject> s in monsters)

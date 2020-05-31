@@ -11,7 +11,8 @@ public class SettingMenu : MonoBehaviour
     {
         settingMenu = GameObject.Find("SettingCavas");
         winText = GameObject.Find("Win");
-        winText.SetActive(false);
+        if(winText != null)
+            winText.SetActive(false);
         settingMenu.SetActive(false);
     }
 
