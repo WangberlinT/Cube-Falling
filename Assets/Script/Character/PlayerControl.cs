@@ -176,7 +176,9 @@ public class PlayerControl : MonoBehaviour
                 world.GetComponent<World>().FallAround(monster_position,true,0.5f);//触发陷落
                 animatorControl.Jump();
                 verticalSpeed = jumpSpeed;
-                Destroy(hitObject);
+                Monster HitMonster= hitObject.GetComponent<MonsterUpdate>().monster;
+                HitMonster.SetHealth(HitMonster.GetHealth() - 1);
+                //Destroy(hitObject);
             }else{
                 Fail_Canvas.enabled = true;
             }

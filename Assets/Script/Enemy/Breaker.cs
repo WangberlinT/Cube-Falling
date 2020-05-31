@@ -96,7 +96,6 @@ public class Breaker : Monster
     // 死亡
     public override void OnDie()
     {
-        this.DeadAction();
         thisWorld.OnEnermyDie(this);
     }
     // 追踪行为

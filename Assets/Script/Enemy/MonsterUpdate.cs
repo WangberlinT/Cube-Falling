@@ -10,11 +10,12 @@ public class MonsterUpdate : MonoBehaviour
     {
         monster = mon;
     }
-    void Start()
-    {
-        
-    }
+
     // Update is called once per frame
+    void Dead()
+    {
+        monster.OnDie();
+    }
     void FixedUpdate()
     {
         //Debug.Log("do fixupdate.");
@@ -32,7 +33,9 @@ public class MonsterUpdate : MonoBehaviour
             }
             else
             {
-                monster.OnDie();
+                //延时
+                this.monster.DeadAction();
+                this.Invoke("Dead", 0.5f);
             }
         }
     }
