@@ -185,7 +185,7 @@ public class World : MonoBehaviour, WorldObserver
     /*
      * 怪物死亡时触发死亡位置的陷落事件
      */
-    public void OnEnermyDie(EnermySubject enermy)
+    public void OnEnermyDie(MonsterSubject enermy)
     {
         Vector3 diePos = enermy.GetPosition();
         FallAround(diePos,true);
@@ -207,7 +207,7 @@ public class World : MonoBehaviour, WorldObserver
     /*
      * Enermy加入world，添加至观察列表
      */
-    public void AddEnermy(EnermySubject e)
+    public void AddEnermy(MonsterSubject e)
     {
         monsterManager.AddEnermySubject(e);
     }

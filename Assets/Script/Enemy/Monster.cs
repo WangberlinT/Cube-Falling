@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Monster: EnermySubject
+public abstract class Monster: MonsterSubject
 {
     protected bool isPaused = false;    // 是否禁用
     protected bool isDead = false;      //是否死亡

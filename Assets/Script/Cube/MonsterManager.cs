@@ -11,7 +11,7 @@ public class MonsterManager
     //保存着Monster的记录信息
     private Dictionary<Vector3, MonsterData> monsterDatas = new Dictionary<Vector3, MonsterData>();
     //保存着EnermySubject
-    private Dictionary<Vector3, EnermySubject> enermys = new Dictionary<Vector3, EnermySubject>();
+    private Dictionary<Vector3, MonsterSubject> monsters = new Dictionary<Vector3, MonsterSubject>();
     private bool hasMonster;
 
     public MonsterManager(World world)
@@ -36,8 +36,8 @@ public class MonsterManager
         {
             MonsterData m = monsterDatas[pos];
             monsterDatas.Remove(pos);
-            enermys[pos].Delete();
-            enermys.Remove(pos);
+            monsters[pos].Delete();
+            monsters.Remove(pos);
         }
         
     }
@@ -77,25 +77,31 @@ public class MonsterManager
 
     public void DestroyMonsters()
     {
-        if(enermys.Values.Count != 0)
+        if(monsters.Values.Count != 0)
         {
-            foreach (EnermySubject e in enermys.Values)
+            foreach (MonsterSubject e in monsters.Values)
             {
                 e.Delete();
             }
-            enermys.Clear();
+            monsters.Clear();
         }
         
     }
 
-    public void AddEnermySubject(EnermySubject e)
+    public void AddEnermySubject(MonsterSubject e)
     {
-        enermys.Add(e.GetPosition(), e);
+        monsters.Add(e.GetPosition(), e);
     }
 
-    public void DeleteEnermySubject(EnermySubject e)
+    //TODO: 修改为遍历的实现
+    public void DeleteMonsterSubject(MonsterSubject e)
     {
-        enermys.Remove(e.GetPosition());
+        foreach(KeyValuePair<Vector3,MonsterSubject> s in monsters)
+        {
+            if(e == s.Value)
+                monsters.Remove(s.Key);
+        }
+            
     }
 
     private void EnermyFactory(MonsterData data)
@@ -108,6 +114,19 @@ public class MonsterManager
             tmp.GetMonster().AddComponent<MonsterUpdate>();
             tmp.GetMonster().GetComponent<MonsterUpdate>().SetMonster(tmp);
         }
+    }
+
+    //通过pos查看是否有相同pos 的Monster
+    public bool FindConflict(Vector3 pos)
+    {
+        foreach(MonsterSubject s in monsters.Values)
+        {
+            if(pos.Equals(s.GetPosition()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     

@@ -38,5 +38,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         screen.Log(TAG, "Died");
         //TODO: Die
+        animator.SetBool("isDie", true);
     }
+
 }

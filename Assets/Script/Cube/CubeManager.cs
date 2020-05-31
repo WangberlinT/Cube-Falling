@@ -103,6 +103,7 @@ public class CubeManager
      * 使世界中某个位置产生一个坠落影响，作用于上下左右的方块
      * isDie = true 是怪物死亡产生的坠落效果
      * isDie = false 是方块连锁产生的效果
+     * time 坠落的延迟，如果是怪物死亡，默认为0
      */
     public void FallAround(Vector3 diePos, bool isDie, float time = 0)
     {

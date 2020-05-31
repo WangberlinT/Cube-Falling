@@ -1,9 +1,9 @@
 ﻿
 public interface WorldObserver
 {
-    void OnEnermyDie(EnermySubject e);
+    void OnEnermyDie(MonsterSubject e);
     void OnPlayerDie();
     void AddPlayer();
-    void AddEnermy(EnermySubject e);
+    void AddEnermy(MonsterSubject e);
 
 }

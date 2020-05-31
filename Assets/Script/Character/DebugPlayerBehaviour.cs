@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebugPlayerBehaviour : MonoBehaviour, EnermySubject
+public class DebugPlayerBehaviour : MonoBehaviour, MonsterSubject
 {
     WorldObserver world;
     private bool die = false;

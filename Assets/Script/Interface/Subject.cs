@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public interface EnermySubject
+public interface MonsterSubject
 {
     //怪物死了，通知World
     void OnDie();
