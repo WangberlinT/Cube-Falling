@@ -190,6 +190,8 @@ public class World : MonoBehaviour, WorldObserver
         Vector3 diePos = enermy.GetFallPosition();
         int range = enermy.GetFallRange();
         cubeManager.FallAbove(diePos,range);
+
+        monsterManager.DeleteMonsterSubject(enermy);
         //cubeManager.FallAround(diePos, true);
     }
     /*

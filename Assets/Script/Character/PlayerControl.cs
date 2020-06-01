@@ -173,7 +173,7 @@ public class PlayerControl : MonoBehaviour
     {
         contact = hit;//简单的绑定作用
         GameObject hitObject = hit.gameObject;
-        Debug.Log(hitObject.name);
+        //Debug.Log(hitObject.name);
         if(hitObject.name.Equals("IceBody"))//如果在冰面上
             moveSpeed = 6.0f;
         else if(hitObject.name.Equals("MudBody"))//如果在泥土上
@@ -187,7 +187,7 @@ public class PlayerControl : MonoBehaviour
             if(player_postion.y-monster_position.y>0.5f){
                 animatorControl.Jump();
                 verticalSpeed = jumpSpeed;
-                Monster HitMonster= hitObject.GetComponent<MonsterUpdate>().monster;
+                Monster HitMonster= hitObject.GetComponent<MonsterUpdate>().GetMonster();
                 HitMonster.SetHealth(HitMonster.GetHealth() - 1);
             }else{
                 animatorControl.Die();

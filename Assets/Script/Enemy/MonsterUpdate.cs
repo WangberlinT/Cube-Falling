@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class MonsterUpdate : MonoBehaviour
 {
-    public Monster monster=null;
-    int index = 0;
+    private Monster monster=null;
     public void SetMonster(Monster mon)
     {
         monster = mon;
     }
-
-    // Update is called once per frame
-    void Dead()
+    public Monster GetMonster()
     {
-        monster.OnDie();
-        Destroy(this.monster.GetMonster());
-        this.monster = null;
-        Destroy(this);
+        return monster;
     }
+    // Update is called once per frame
     void FixedUpdate()
     {
         //Debug.Log("do fixupdate.");
@@ -37,9 +32,13 @@ public class MonsterUpdate : MonoBehaviour
             else
             {
                 //延时
-                if((index++) == 0)
-                    this.monster.DeadAction();                
-                this.Invoke("Dead", 0.7f);
+
+                    this.monster.DeadAction();
+                    monster.OnDie();
+                    this.monster = null;
+                    Destroy(gameObject,0.5f);
+
+                //this.Invoke("Dead", 0.7f);
             }
         }
     }
