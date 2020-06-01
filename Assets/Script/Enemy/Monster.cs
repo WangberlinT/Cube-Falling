@@ -16,10 +16,10 @@ public abstract class Monster: MonsterSubject
     protected int health;          // 生命
     protected GameObject monster;       //怪物实例
     protected Animator monsterAni;      // 怪物动画实例
-    protected Vector3 position;
+    protected Vector3 destination;         // 怪物行走的目的地
     public Monster(Vector3 pos)
     {
-        position = pos;
+        destination = pos;
     }
     public bool GetPaused()
     {
@@ -89,13 +89,17 @@ public abstract class Monster: MonsterSubject
     {
         return monster;
     }
+    public Vector3 GetDestination()
+    {
+        return destination;
+    }
+    public void SetDestination(Vector3 pos)
+    {
+        this.destination = pos;
+    }
     public Vector3 GetPosition()
     {
-        return position;
-    }
-    public void SetPosition(Vector3 pos)
-    {
-        this.position = pos;
+        return monster.transform.position;
     }
     public Animator GetAnimator()
     {

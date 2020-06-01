@@ -188,6 +188,7 @@ public class World : MonoBehaviour, WorldObserver
     public void OnEnermyDie(MonsterSubject enermy)
     {
         Vector3 diePos = enermy.GetPosition();
+        Debug.Log(diePos);
         FallAround(diePos,true);
     }
     /*

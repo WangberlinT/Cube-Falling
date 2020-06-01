@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4885079432260988}
   - component: {fileID: 95471671811264702}
-  - component: {fileID: 3608280383510311734}
+  - component: {fileID: 8416436359264338358}
   - component: {fileID: 8667476586731054072}
   m_Layer: 0
   m_Name: Breaker
@@ -86,7 +86,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &3608280383510311734
+--- !u!54 &8416436359264338358
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
