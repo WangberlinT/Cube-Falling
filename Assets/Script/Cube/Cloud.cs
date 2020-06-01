@@ -31,6 +31,7 @@ public class Cloud : Cube
     //云的陷落是消失
     public override void FallDown()
     {
+        world.GetCubeManager().DecreaseCubeCount();
         actor.UniformDecline(fallDownSpeed, new Vector3(0, -1, 0));
         actor.DelayToDestory(breakDelay);
     }
