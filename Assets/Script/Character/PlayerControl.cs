@@ -151,7 +151,7 @@ public class PlayerControl : MonoBehaviour
         {
             animatorControl.Jump();
             verticalSpeed = jumpSpeed;
-            moveSpeed = 3.0f;//重置水平速度
+            // moveSpeed = 3.0f;//重置水平速度
         }
     }
     //更新下落垂直速度
@@ -176,6 +176,8 @@ public class PlayerControl : MonoBehaviour
         Debug.Log(hitObject.name);
         if(hitObject.name.Equals("IceBody"))//如果在冰面上
             moveSpeed = 6.0f;
+        else if(hitObject.name.Equals("MudBody"))//如果在泥土上
+            moveSpeed = 1.5f;
         else
             moveSpeed = 3.0f;//重置水平速度
         if(hitObject.name.Equals("Breaker(Clone)"))//如果碰撞到的物体为monster
