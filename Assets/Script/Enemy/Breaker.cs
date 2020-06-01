@@ -54,15 +54,13 @@ public class Breaker : Monster
         //没有移动时 开始移动
         if(!isMoving&&!isRotating)
         {
-            int index = 0;
             do{
                 direction = Random.Range(0, 4);
                 //寻找一个没有怪物的方块,防止碰撞
                 if (thisWorld.GetMonsterManager().FindConflict(RandomDirection(direction) + this.GetDestination()))
                     continue;
                 tar = RandomDirection(direction) + this.GetDestination();
-                index++;
-            }while (!canMove(tar)&&index < 5);
+            }while (!canMove(tar));
             //根据随机设置方向index
             //转入旋转等待
             this.SetFace(direction);
