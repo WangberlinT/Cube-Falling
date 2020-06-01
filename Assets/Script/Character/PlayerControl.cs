@@ -133,7 +133,7 @@ public class PlayerControl : MonoBehaviour
         else
             screen.Log(TAG, string.Format("Not Grounded,distance = {0}", distance));
         //悬空状态
-        if(!hitGround&&distance==0&&verticalSpeed<-10.0f)
+        if(!hitGround&&distance==0&&verticalSpeed<-18.0f)
         {
             animatorControl.Die();
             GameManager.GetInstance().Fail();
