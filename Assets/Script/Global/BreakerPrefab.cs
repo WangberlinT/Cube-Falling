@@ -5,7 +5,7 @@ using UnityEngine;
 public class BreakerPrefab : PrefabObject
 {
     
-    public BreakerPrefab(GameObject breaker):base(breaker,new SphereBehaviour())
+    public BreakerPrefab(GameObject breaker):base(breaker,new CubeBehaviour())
     {
 
     }
