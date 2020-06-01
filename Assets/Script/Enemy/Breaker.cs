@@ -35,7 +35,10 @@ public class Breaker : Monster
     
     public override void DeadAction()
     {
-        Vector3Int tmp = new Vector3Int((int)monster.transform.localPosition.x, (int)monster.transform.localPosition.y-1, (int)monster.transform.localPosition.z);
+        int x = RangeInt(monster.transform.localPosition.x);
+        int y = RangeInt(monster.transform.localPosition.y);
+        int z = RangeInt(monster.transform.localPosition.z);
+        Vector3Int tmp = new Vector3Int(x, y-1, z);
         Debug.Log("tmp");
         Debug.Log(tmp);
         this.SetFallCenter(tmp);

@@ -172,6 +172,12 @@ public abstract class Monster: MonsterSubject
         monster.transform.rotation = Quaternion.Euler(new Vector3(0, 90*(GetFace()),0));
         SetTime(GetTime() + (float)1/(waitTime+1));
     }
+    // 四舍五入
+    public int RangeInt(float tar)
+    {
+        return (int)(tar * 2 + 0.5f) / 2;
+    }
+
     public abstract void OnDie();
 
     public abstract void OnCreate();
