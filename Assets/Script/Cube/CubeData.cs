@@ -31,6 +31,8 @@ public class CubeData
             return CubeType.Ice;
         else if (cube is Mud)
             return CubeType.Mud;
+        else if (cube is Cloud)
+            return CubeType.Cloud;
         else
             return CubeType.Air;
     }

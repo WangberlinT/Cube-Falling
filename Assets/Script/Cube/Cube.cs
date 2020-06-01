@@ -58,6 +58,14 @@ public abstract class Cube
         return delay;
     }
     /*
+     * 踩踏事件
+     */
+    public void OnTread()
+    {
+        //Donothing
+    }
+
+    /*
      * 当前方块触发坠落，子类重写此方法
      * 云方块的FallDown是破碎消失
      * 除了云方块，其他方块在世界中触发FallAround事件

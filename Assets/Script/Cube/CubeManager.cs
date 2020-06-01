@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum CubeType
 {
-    Air, Stone, Sand, Ice,Mud,
+    Air, Stone, Sand, Ice,Mud,Cloud,
     //length of cube type
     Length
 }
@@ -56,6 +56,8 @@ public class CubeManager
             cubes[x, y, z] = new Ice(pos, world);
         else if (type == CubeType.Mud)
             cubes[x, y, z] = new Mud(pos, world);
+        else if (type == CubeType.Cloud)
+            cubes[x, y, z] = new Cloud(pos, world);
     }
 
     public Cube[,,] GetCubes()
@@ -81,6 +83,8 @@ public class CubeManager
                             cubes[x, y, z] = new Ice(new Vector3(x, y, z), world);
                         else if (cubeDatas[x, y, z].cubeType == CubeType.Mud)
                             cubes[x, y, z] = new Mud(new Vector3(x, y, z), world);
+                        else if (cubeDatas[x, y, z].cubeType == CubeType.Cloud)
+                            cubes[x, y, z] = new Cloud(new Vector3(x, y, z), world);
 
                         cubeCount++;
                     }
@@ -168,7 +172,8 @@ public class CubeManager
                 {
                     Debug.Log(i + " " + j + " " + k);
                     Cube temp = cubes[i, j, k];
-                    temp.FallDown();
+                    if(temp != null)
+                        temp.FallDown();
                 }
             }            
         }

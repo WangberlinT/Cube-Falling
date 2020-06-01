@@ -41,4 +41,31 @@ public class CubeActor : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    
+    private IEnumerator DelayDestroy(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        DestoryCube();
+    }
+
+    public void DelayToDestory(float delay)
+    {
+        StartCoroutine(DelayDestroy(delay));
+    }
+
+    private IEnumerator Move(Vector3 interval)
+    {
+        while(true)
+        {
+            transform.position += interval;
+            yield return null;
+        }
+    }
+
+    public void UniformDecline(float speed, Vector3 direction)
+    {
+        Vector3 interval = Time.deltaTime * speed * direction;
+        StartCoroutine(Move(interval));
+    }
+
 }
