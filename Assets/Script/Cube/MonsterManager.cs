@@ -100,10 +100,12 @@ public class MonsterManager
 
     public void DeleteMonsterSubject(MonsterSubject e)
     {
-        foreach(KeyValuePair<Vector3,MonsterSubject> s in monsters)
+
+        List<Vector3> key = new List<Vector3>(monsters.Keys);
+        for (int i =0;i<monsters.Count;i++)
         {
-            if(e == s.Value)
-                monsters.Remove(s.Key);
+            if (e == monsters[key[i]])
+                monsters.Remove(key[i]);
         }
             
     }
