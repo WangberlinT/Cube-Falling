@@ -135,7 +135,12 @@ public class PlayerControl : MonoBehaviour
             screen.Log(TAG, string.Format("Not Grounded,distance = {0}", distance));
         //悬空状态
         if(!hitGround&&distance==0&&verticalSpeed<-10.0f)
-            Fail_Canvas.enabled = true;
+        {
+            //Fail_Canvas.enabled = true;
+            animatorControl.Die();
+            GameManager.GetInstance().Fail();
+        }
+
         return hitGround;
     }
 
@@ -180,7 +185,9 @@ public class PlayerControl : MonoBehaviour
                 HitMonster.SetHealth(HitMonster.GetHealth() - 1);
                 //Destroy(hitObject);
             }else{
-                Fail_Canvas.enabled = true;
+                //Fail_Canvas.enabled = true;
+                animatorControl.Die();
+                GameManager.GetInstance().Fail();
             }
                 
         }

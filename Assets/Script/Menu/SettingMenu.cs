@@ -1,24 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingMenu : MonoBehaviour
 {
     private GameObject settingMenu;
-    private GameObject winText;
+    private GameObject promptText;
 
     private void Start()
     {
         settingMenu = GameObject.Find("SettingCavas");
-        winText = GameObject.Find("Win");
-        if(winText != null)
-            winText.SetActive(false);
+        promptText = GameObject.Find("Win");
+        if(promptText != null)
+            promptText.SetActive(false);
         settingMenu.SetActive(false);
     }
 
     public void UpdateActive()
     {
         settingMenu.SetActive(!settingMenu.activeSelf);
+
     }
 
     public bool GetMenuActive()
@@ -30,6 +32,7 @@ public class SettingMenu : MonoBehaviour
     {
         GameManager.GetInstance().Replay();
         GameManager.GetInstance().UpdateSettingMenu();
+        promptText.SetActive(false);
     }
 
     public void Back()
@@ -53,6 +56,14 @@ public class SettingMenu : MonoBehaviour
     public void WinPrompt()
     {
         Debug.Log("Win");
-        winText.SetActive(true);
+        promptText.GetComponent<Text>().text = "Win";
+        promptText.SetActive(true);
+    }
+
+    public void FailPrompt()
+    {
+        Debug.Log("Fail");
+        promptText.GetComponent<Text>().text = "Fail";
+        promptText.SetActive(true);
     }
 }

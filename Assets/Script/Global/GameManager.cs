@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     private InputController inputController;
     private static GameMode gameMode;
+    private static bool gameover = false;
    
 
     //Debug
@@ -76,13 +77,30 @@ public class GameManager : MonoBehaviour
     }
     public void Replay()
     {
+        gameover = false;
         world.Replay();
     }
 
     public void Win()
     {
-        settingMenu.WinPrompt();
-        UpdateSettingMenu();
+        if(!gameover)
+        {
+            gameover = true;
+            settingMenu.WinPrompt();
+            UpdateSettingMenu();
+        }
+        
+    }
+
+    public void Fail()
+    {
+        if(!gameover)
+        {
+            gameover = true;
+            settingMenu.FailPrompt();
+            UpdateSettingMenu();
+        }
+        
     }
 
     public void SaveWorld()

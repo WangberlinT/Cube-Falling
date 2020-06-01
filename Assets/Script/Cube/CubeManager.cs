@@ -176,7 +176,6 @@ public class CubeManager
 
     public void CheckWin()
     {
-        Debug.Log(cubeCount);
         if (cubeCount == 0)
             GameManager.GetInstance().Win();
     }
