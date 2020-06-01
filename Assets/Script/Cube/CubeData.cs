@@ -29,6 +29,8 @@ public class CubeData
             return CubeType.Sand;
         else if (cube is Ice)
             return CubeType.Ice;
+        else if (cube is Mud)
+            return CubeType.Mud;
         else
             return CubeType.Air;
     }

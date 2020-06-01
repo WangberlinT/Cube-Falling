@@ -79,6 +79,8 @@ public class CubeManager
                             cubes[x, y, z] = new Sand(new Vector3(x, y, z), world);
                         else if (cubeDatas[x, y, z].cubeType == CubeType.Ice)
                             cubes[x, y, z] = new Ice(new Vector3(x, y, z), world);
+                        else if (cubeDatas[x, y, z].cubeType == CubeType.Mud)
+                            cubes[x, y, z] = new Mud(new Vector3(x, y, z), world);
 
                         cubeCount++;
                     }
