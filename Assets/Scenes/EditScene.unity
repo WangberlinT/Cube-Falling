@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1726,7 +1726,7 @@ MonoBehaviour:
   breakBlock: {fileID: 206522577}
   placeBlock: {fileID: 1472607539}
   playerModel: {fileID: 210209117}
-  enermyModelPrefab: {fileID: 0}
+  enermyPosOffset: {x: 0.5, y: 0, z: 0.5}
 --- !u!4 &1609345301
 Transform:
   m_ObjectHideFlags: 0
@@ -2268,5 +2268,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9206235989215996943, guid: f0e0f6a37053853438f992d4c75be667, type: 3}
+    - {fileID: 5043864432390206319, guid: f0e0f6a37053853438f992d4c75be667, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f0e0f6a37053853438f992d4c75be667, type: 3}

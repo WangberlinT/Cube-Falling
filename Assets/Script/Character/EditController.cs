@@ -42,7 +42,6 @@ public class EditController : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         camTrans = transform.Find("Main Camera");
         screen = DebugScreen.GetInstance();
         world = GameObject.Find("World").GetComponent<World>();

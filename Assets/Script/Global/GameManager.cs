@@ -42,9 +42,17 @@ public class GameManager : MonoBehaviour
             player = GameObject.Find("Player");
             settingMenu = GetComponent<SettingMenu>();
             if (MainScene == SceneManager.GetActiveScene().buildIndex)
+            {
                 inputController = PlayerInputController.GetInstance();
+                screen.Log("[InputController]", "Play");
+            } 
             else
+            {
+                screen.Log("[InputController]", "Edit");
                 inputController = EditInputController.GetInstance();
+            }
+                
+            inputController.StartAll();
             WorldInit();
         }
         
@@ -79,6 +87,7 @@ public class GameManager : MonoBehaviour
     {
         gameover = false;
         world.Replay();
+        UpdateSettingMenu();
     }
 
     public void Win()
@@ -150,6 +159,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateSettingMenu()
     {
+
         //打开设置提示栏
         settingMenu.UpdateActive();
         //禁用所有游戏控制

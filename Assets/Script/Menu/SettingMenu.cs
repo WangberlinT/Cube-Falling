@@ -31,7 +31,6 @@ public class SettingMenu : MonoBehaviour
     public void Replay()
     {
         GameManager.GetInstance().Replay();
-        GameManager.GetInstance().UpdateSettingMenu();
         promptText.SetActive(false);
     }
 
