@@ -108,6 +108,7 @@ public class CubeManager
      */
     public void FallAround(Vector3 diePos, bool isDie, float time = 0)
     {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("StoneBreak");
         CameraShaker.Instance.ShakeOnce(2f, 2f, 0.1f, 1f);
         Vector3Int[] offset =  { new Vector3Int( 0, 1, 0 ), new Vector3Int( 0, -1, 0 ),
                                  new Vector3Int( -1, 0, 0 ), new Vector3Int( 1, 0, 0 ),

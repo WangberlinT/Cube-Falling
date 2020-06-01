@@ -43,13 +43,13 @@ public class GameManager : MonoBehaviour
             settingMenu = GetComponent<SettingMenu>();
             if (MainScene == SceneManager.GetActiveScene().buildIndex)
             {
-                inputController = PlayerInputController.GetInstance();
+                inputController = new PlayerInputController();
                 screen.Log("[InputController]", "Play");
             } 
             else
             {
                 screen.Log("[InputController]", "Edit");
-                inputController = EditInputController.GetInstance();
+                inputController = new EditInputController();
             }
                 
             inputController.StartAll();

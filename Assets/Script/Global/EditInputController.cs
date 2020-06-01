@@ -4,17 +4,10 @@ using UnityEngine;
 
 public class EditInputController : InputController
 {
-    private static EditInputController instance;
     private EditController controller;
     private GameObject crosshair;
-    public static InputController GetInstance()
-    {
-        if (instance == null)
-            instance = new EditInputController();
-        return instance;
-    }
 
-    private EditInputController()
+    public EditInputController()
     {
         controller = GameObject.Find("Player").GetComponent<EditController>();
         crosshair = GameObject.Find("Crosshair");

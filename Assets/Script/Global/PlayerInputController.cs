@@ -9,18 +9,9 @@ public class PlayerInputController : InputController
 
     private static PlayerInputController instance;
     // Start is called before the first frame update
-    public static InputController GetInstance()
-    {
-        if(instance == null)
-        {
-            instance = new PlayerInputController();
-        }
-        return instance;
-    }
 
-    private PlayerInputController()
+    public PlayerInputController()
     {
-        instance = this;
         playerControl = GameObject.Find("Player").GetComponent<PlayerControl>();
         orbitCamera = GameObject.Find("CameraHolder").GetComponent<OrbitCamera>();
     }
