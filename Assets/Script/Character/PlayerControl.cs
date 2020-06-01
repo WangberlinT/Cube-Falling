@@ -139,6 +139,7 @@ public class PlayerControl : MonoBehaviour
             //Fail_Canvas.enabled = true;
             animatorControl.Die();
             GameManager.GetInstance().Fail();
+            verticalSpeed = 0f;
         }
 
         return hitGround;
