@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using EZCameraShake;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -107,6 +108,7 @@ public class CubeManager
      */
     public void FallAround(Vector3 diePos, bool isDie, float time = 0)
     {
+        CameraShaker.Instance.ShakeOnce(2f, 2f, 0.1f, 1f);
         Vector3Int[] offset =  { new Vector3Int( 0, 1, 0 ), new Vector3Int( 0, -1, 0 ),
                                  new Vector3Int( -1, 0, 0 ), new Vector3Int( 1, 0, 0 ),
                                  new Vector3Int( 0, 0, 1 ), new Vector3Int( 0, 0, -1 )};

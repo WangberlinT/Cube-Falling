@@ -22,7 +22,7 @@ public class PlayerInputController :MonoBehaviour, InputController
         {
             instance = this;
             playerControl = GameObject.Find("Player").GetComponent<PlayerControl>();
-            orbitCamera = GameObject.Find("Main Camera").GetComponent<OrbitCamera>();
+            orbitCamera = GameObject.Find("CameraHolder").GetComponent<OrbitCamera>();
         }
         
     }
