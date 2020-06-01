@@ -16,6 +16,7 @@ public class MonsterUpdate : MonoBehaviour
     {
         monster.OnDie();
         Destroy(this.monster.GetMonster());
+        Destroy(this);
     }
     void FixedUpdate()
     {

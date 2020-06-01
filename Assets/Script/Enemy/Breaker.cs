@@ -50,9 +50,9 @@ public class Breaker : Monster
             do{
                 direction = Random.Range(0, 4);
                 //寻找一个没有怪物的方块,防止碰撞
-                if (thisWorld.GetMonsterManager().FindConflict(RandomDirection(direction) + this.GetPosition()))
+                if (thisWorld.GetMonsterManager().FindConflict(RandomDirection(direction) + this.GetDestination()))
                     continue;
-                tar = RandomDirection(direction) + this.GetPosition();
+                tar = RandomDirection(direction) + this.GetDestination();
                 index++;
             }while (canMove(tar)&&index < 5);
             //根据随机设置方向index
@@ -64,7 +64,7 @@ public class Breaker : Monster
         else if(isRotating)
         {
             this.RotatePause(15);
-            this.SetPosition(tar);
+            this.SetDestination(tar);
         }
         else
         {
