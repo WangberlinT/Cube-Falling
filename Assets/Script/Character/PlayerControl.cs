@@ -31,7 +31,6 @@ public class PlayerControl : MonoBehaviour
     private PlayerAnimator animatorControl;
     //------组件---------
     public AudioSource audioSource;
-    public Canvas Fail_Canvas;
     public GameObject world;
     private void Start()
     {
@@ -136,9 +135,9 @@ public class PlayerControl : MonoBehaviour
         //悬空状态
         if(!hitGround&&distance==0&&verticalSpeed<-10.0f)
         {
-            //Fail_Canvas.enabled = true;
             animatorControl.Die();
             GameManager.GetInstance().Fail();
+            verticalSpeed = 0f;
         }
 
         return hitGround;
@@ -183,9 +182,7 @@ public class PlayerControl : MonoBehaviour
                 verticalSpeed = jumpSpeed;
                 Monster HitMonster= hitObject.GetComponent<MonsterUpdate>().monster;
                 HitMonster.SetHealth(HitMonster.GetHealth() - 1);
-                //Destroy(hitObject);
             }else{
-                //Fail_Canvas.enabled = true;
                 animatorControl.Die();
                 GameManager.GetInstance().Fail();
             }
