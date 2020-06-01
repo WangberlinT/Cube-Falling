@@ -7,7 +7,7 @@ using UnityEngine;
  */
 public enum PrefabType
 {
-    Stone, Sand,Ice,
+    Stone, Sand,Ice,Mud,
     Breaker
 }
 public class PrefabManager : MonoBehaviour
@@ -55,5 +55,6 @@ public class PrefabManager : MonoBehaviour
         prefabs[PrefabType.Sand] = new SandPrefab((GameObject)Resources.Load("Prefabs/Cubes/Sand", typeof(GameObject)));
         prefabs[PrefabType.Breaker] = new BreakerPrefab((GameObject)Resources.Load("Prefabs/Enermy/Breaker", typeof(GameObject)));
         prefabs[PrefabType.Ice] = new IcePrefab((GameObject)Resources.Load("Prefabs/Cubes/Ice", typeof(GameObject)));
+        prefabs[PrefabType.Mud] = new MudPrefab((GameObject)Resources.Load("Prefabs/Cubes/Mud", typeof(GameObject)));
     }
 }
