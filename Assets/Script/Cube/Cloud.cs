@@ -25,15 +25,23 @@ public class Cloud : Cube
     public override void DelayToFall()
     {
         if (!isFalling)
+        {
+            isFalling = true;
             actor.DelayToFall(delay, this);
+        }
+            
     }
 
     //云的陷落是消失
     public override void FallDown()
     {
-        world.GetCubeManager().DecreaseCubeCount();
-        actor.UniformDecline(fallDownSpeed, new Vector3(0, -1, 0));
-        actor.DelayToDestory(breakDelay);
+        if(!isFalling)
+        {
+            isFalling = true;
+            world.GetCubeManager().DecreaseCubeCount();
+            actor.UniformDecline(fallDownSpeed, new Vector3(0, -1, 0));
+            actor.DelayToDestory(breakDelay);
+        }
     }
 
     public override void Disappear()
@@ -45,8 +53,13 @@ public class Cloud : Cube
         }
     }
 
-    public void OnTread()
+    public override void OnTread()
     {
-        actor.DelayToFall(standTime,this);
+        Debug.Log("Tread");
+        if(!isFalling)
+        {
+            actor.DelayToFall(standTime, this);
+        }
+            
     }
 }

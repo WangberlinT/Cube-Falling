@@ -67,9 +67,15 @@ public class PlayerControl : MonoBehaviour
             Quaternion direction = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Lerp(transform.rotation, direction, rotSpeed * Time.deltaTime);
         }
-        //判断是否要播放脚步声
-        if(IsGrounded() && !audioSource.isPlaying &&  (horInput != 0 || vertInput != 0))
-            audioSource.Play();
+        
+        if(IsGrounded())
+        {
+            //判断是否要播放脚步声
+            if (!audioSource.isPlaying && (horInput != 0 || vertInput != 0))
+                audioSource.Play();
+            world.GetComponent<World>().GetCubeManager().TreadCube(transform.position);
+        }
+            
         else
             audioSource.Pause();
         VerticalMovement();
@@ -139,7 +145,7 @@ public class PlayerControl : MonoBehaviour
             GameManager.GetInstance().Fail();
             verticalSpeed = 0f;
         }
-
+        
         return hitGround;
     }
 

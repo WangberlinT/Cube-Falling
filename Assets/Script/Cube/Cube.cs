@@ -60,8 +60,9 @@ public abstract class Cube
     /*
      * 踩踏事件
      */
-    public void OnTread()
+    public virtual void OnTread()
     {
+        Debug.Log("Cube");
         //Donothing
     }
 

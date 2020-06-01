@@ -120,7 +120,7 @@ public class Breaker : Monster
         int y = RangeInt(tar.y);
         int z = RangeInt(tar.z);
         //超出边界的时候
-        Debug.Log(x+", "+y+", "+z);
+        //Debug.Log(x+", "+y+", "+z);
         // 脚下没有方块时的时候
         if (cubeIdx[x, y-1, z] == null)
             return false;
