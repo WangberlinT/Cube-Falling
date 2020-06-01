@@ -54,7 +54,7 @@ public class Breaker : Monster
                     continue;
                 tar = RandomDirection(direction) + this.GetPosition();
                 index++;
-            }while (cubeIdx[(int)(tar.x-0.5),(int)(tar.y-1),(int)(tar.z-0.5)]==null&&index < 5);
+            }while (canMove(tar)&&index < 5);
             //根据随机设置方向index
             //转入旋转等待
             this.SetFace(direction);
@@ -105,6 +105,19 @@ public class Breaker : Monster
         throw new System.NotImplementedException();
     }
 
+    public bool canMove(Vector3 tar)
+    {
+        //超出边界的时候
+        
+        // 脚下没有方块时的时候
+        if (cubeIdx[(int)(tar.x - 0.5), (int)(tar.y - 1), (int)(tar.z - 0.5)] == null)
+            return false;
+        // 面前是方块时
+        if (cubeIdx[(int)(tar.x - 0.5), (int)(tar.y), (int)(tar.z - 0.5)] == null)
+            return false;
+
+        return true;
+    }
     
     /*
      * Replay 的时候要清空world中的Monster

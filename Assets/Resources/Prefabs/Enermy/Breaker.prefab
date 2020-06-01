@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4885079432260988}
   - component: {fileID: 95471671811264702}
   - component: {fileID: 3608280383510311734}
-  - component: {fileID: 5281752187317960372}
+  - component: {fileID: 8667476586731054072}
   m_Layer: 0
   m_Name: Breaker
   m_TagString: Untagged
@@ -102,8 +102,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &5281752187317960372
-SphereCollider:
+--- !u!65 &8667476586731054072
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -113,8 +113,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Size: {x: 0.8, y: 0.9, z: 0.8}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1 &1159745215084782
 GameObject:
   m_ObjectHideFlags: 0
