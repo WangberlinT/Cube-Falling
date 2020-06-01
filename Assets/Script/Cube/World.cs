@@ -187,9 +187,10 @@ public class World : MonoBehaviour, WorldObserver
      */
     public void OnEnermyDie(MonsterSubject enermy)
     {
-        Vector3 diePos = enermy.GetPosition();
-        Debug.Log(diePos);
-        FallAround(diePos,true);
+        Vector3 diePos = enermy.GetFallPosition();
+        int range = enermy.GetFallRange();
+        cubeManager.FallAbove(diePos,range);
+        //cubeManager.FallAround(diePos, true);
     }
     /*
      * 玩家死亡时，打开游戏结束提示框

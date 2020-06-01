@@ -35,11 +35,18 @@ public class DebugPlayerBehaviour : MonoBehaviour, MonsterSubject
         world.OnEnermyDie(this);
     }
 
+    public Vector3 GetFallPosition()
+    {
+        return transform.position;
+    }
     public Vector3 GetPosition()
     {
         return transform.position;
     }
-
+    public int GetFallRange()
+    {
+        return 0;
+    }
     public void Delete()
     {
         //Donothing

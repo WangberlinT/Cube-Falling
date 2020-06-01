@@ -137,6 +137,8 @@ public class CubeManager
                 {
                     if (isDie)
                     {
+                        Debug.Log("Cube Falls");
+                        Debug.Log(pos);
                         temp.FallDown();
                     }
                     else
@@ -152,7 +154,29 @@ public class CubeManager
             }
         }
     }
+    // 在某点一定范围内，同时陷落所有方块
+    public void FallAbove(Vector3 centerPos,int range, float time = 0)
+    {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().Play("StoneBreak");
+        CameraShaker.Instance.ShakeOnce(2f, 2f, 0.1f, 1f);
 
+        int x = Mathf.FloorToInt(centerPos.x);
+        int y = Mathf.FloorToInt(centerPos.y);
+        int z = Mathf.FloorToInt(centerPos.z);
+
+        for (int i = x-range; i <= x+range; i++)
+        {
+            for(int j = y-range; j <= y+range;j++)
+            {
+                for (int k = z - range; k <= z + range; k++)
+                {
+                    Debug.Log(i + " " + j + " " + k);
+                    Cube temp = cubes[i, j, k];
+                    temp.FallDown();
+                }
+            }            
+        }
+    }
     private bool OutOfBound(int x, int y, int z)
     {
         return x < 0 || x >= world.worldWidth || y < 0 || y >= world.worldHeight || z < 0 || z >= world.worldWidth;

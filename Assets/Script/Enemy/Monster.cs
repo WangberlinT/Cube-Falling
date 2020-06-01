@@ -11,9 +11,11 @@ public abstract class Monster: MonsterSubject
     protected float timestamp;          //旋转时间戳
 
     protected int faceIndex=0;           //朝向下标 0为向前，1为向右，2为向后，3为向左
-    protected float moveSpeed;    // 移动速度
-    protected float traceDepth;    // 仇恨范围
-    protected int health;          // 生命
+    protected float moveSpeed;         // 移动速度
+    protected float traceDepth;        // 仇恨范围
+    protected int health;              // 生命
+    protected int fallRange;           // 陷落范围
+    protected Vector3 fallCenter;          // 陷落中心
     protected GameObject monster;       //怪物实例
     protected Animator monsterAni;      // 怪物动画实例
     protected Vector3 destination;         // 怪物行走的目的地
@@ -85,10 +87,35 @@ public abstract class Monster: MonsterSubject
     {
         health = h;
     }
+    
+    public int GetFallRange()
+    {
+        return fallRange;
+    }
+    public void SetFallRange(int r)
+    {
+        fallRange = r;
+    }
+
+    public Vector3 GetFallCenter()
+    {
+        return fallCenter;
+    }
+    public void SetFallCenter(Vector3 c)
+    {
+        fallCenter = c;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return monster.transform.localPosition;
+    }
+
     public GameObject GetMonster()
     {
         return monster;
     }
+
     public Vector3 GetDestination()
     {
         return destination;
@@ -97,10 +124,12 @@ public abstract class Monster: MonsterSubject
     {
         this.destination = pos;
     }
-    public Vector3 GetPosition()
+
+    public Vector3 GetFallPosition()
     {
-        return monster.transform.position;
+        return GetFallCenter();
     }
+
     public Animator GetAnimator()
     {
         return monsterAni;
@@ -111,6 +140,7 @@ public abstract class Monster: MonsterSubject
     public abstract void TraceAction();
     // 平常行为
     public abstract void NormalAction();
+    // 随机方向
     public Vector3 RandomDirection(int i)
     {
         switch (i)
@@ -142,6 +172,12 @@ public abstract class Monster: MonsterSubject
         monster.transform.rotation = Quaternion.Euler(new Vector3(0, 90*(GetFace()),0));
         SetTime(GetTime() + (float)1/(waitTime+1));
     }
+    // 四舍五入
+    public int RangeInt(float tar)
+    {
+        return (int)(tar * 2 + 0.5f) / 2;
+    }
+
     public abstract void OnDie();
 
     public abstract void OnCreate();
