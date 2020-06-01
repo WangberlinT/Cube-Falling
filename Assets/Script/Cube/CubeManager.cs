@@ -172,7 +172,8 @@ public class CubeManager
                 {
                     Debug.Log(i + " " + j + " " + k);
                     Cube temp = cubes[i, j, k];
-                    temp.FallDown();
+                    if(temp != null)
+                        temp.FallDown();
                 }
             }            
         }
