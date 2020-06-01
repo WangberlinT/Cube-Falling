@@ -12,5 +12,6 @@ public interface MonsterSubject
     void Delete();
 
     Vector3 GetPosition();
-    
+    Vector3 GetFallPosition();
+    int GetFallRange();
 }

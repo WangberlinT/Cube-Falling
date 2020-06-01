@@ -24,6 +24,7 @@ public class Breaker : Monster
         moveSpeed = 0.2f;
         traceDepth = 5;
         health = 1;
+        fallRange = 0;  //0代表只陷落1个方块
         monster = GameObject.Instantiate(PrefabManager.GetInstance().GetPrefab(PrefabType.Breaker).GetGameObject());
         monsterAni = monster.GetComponent<Animator>();
         monster.transform.position = pos;
@@ -34,6 +35,10 @@ public class Breaker : Monster
     
     public override void DeadAction()
     {
+        Vector3Int tmp = new Vector3Int((int)monster.transform.localPosition.x, (int)monster.transform.localPosition.y-1, (int)monster.transform.localPosition.z);
+        Debug.Log("tmp");
+        Debug.Log(tmp);
+        this.SetFallCenter(tmp);
         //播放死亡动画
         this.GetAnimator().SetBool("isDead", true);
         this.SetDead(true);
@@ -96,8 +101,7 @@ public class Breaker : Monster
     // 死亡
     public override void OnDie()
     {
-        thisWorld.OnEnermyDie(this);
-        
+        thisWorld.OnEnermyDie(this);       
     }
     // 追踪行为
     public override void TraceAction()

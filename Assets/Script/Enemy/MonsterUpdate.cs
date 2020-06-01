@@ -5,7 +5,7 @@ using UnityEngine;
 public class MonsterUpdate : MonoBehaviour
 {
     public Monster monster=null;
-    
+    int index = 0;
     public void SetMonster(Monster mon)
     {
         monster = mon;
@@ -16,6 +16,7 @@ public class MonsterUpdate : MonoBehaviour
     {
         monster.OnDie();
         Destroy(this.monster.GetMonster());
+        this.monster = null;
         Destroy(this);
     }
     void FixedUpdate()
@@ -36,8 +37,8 @@ public class MonsterUpdate : MonoBehaviour
             else
             {
                 //延时
-                this.monster.DeadAction();
-                
+                if((index++) == 0)
+                    this.monster.DeadAction();                
                 this.Invoke("Dead", 0.7f);
             }
         }
