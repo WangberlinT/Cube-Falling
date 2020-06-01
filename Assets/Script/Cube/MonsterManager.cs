@@ -128,7 +128,7 @@ public class MonsterManager
     {
         foreach(MonsterSubject s in monsters.Values)
         {
-            if(pos.Equals(s.GetPosition()))
+            if(pos.Equals(s.GetDestination()))
             {
                 return true;
             }

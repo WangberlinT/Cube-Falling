@@ -11,7 +11,8 @@ public interface MonsterSubject
 
     void Delete();
 
-    Vector3 GetPosition();
-    Vector3 GetFallPosition();
+    Vector3 GetPosition();  // 获得当前位置
+    Vector3 GetFallPosition();  // 获得爆炸半径
+    Vector3 GetDestination();   // 获得目的地
     int GetFallRange();
 }

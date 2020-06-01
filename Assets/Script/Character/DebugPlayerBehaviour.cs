@@ -43,6 +43,10 @@ public class DebugPlayerBehaviour : MonoBehaviour, MonsterSubject
     {
         return transform.position;
     }
+    public Vector3 GetDestination()
+    {
+        return transform.position;
+    }
     public int GetFallRange()
     {
         return 0;

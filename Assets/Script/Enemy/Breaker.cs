@@ -62,7 +62,7 @@ public class Breaker : Monster
                     continue;
                 tar = RandomDirection(direction) + this.GetDestination();
                 index++;
-            }while (canMove(tar)&&index < 5);
+            }while (!canMove(tar)&&index < 5);
             //根据随机设置方向index
             //转入旋转等待
             this.SetFace(direction);
@@ -114,13 +114,16 @@ public class Breaker : Monster
 
     public bool canMove(Vector3 tar)
     {
+        int x = RangeInt(tar.x);
+        int y = RangeInt(tar.y);
+        int z = RangeInt(tar.z);
         //超出边界的时候
-        
+        Debug.Log(x+", "+y+", "+z);
         // 脚下没有方块时的时候
-        if (cubeIdx[(int)(tar.x - 0.5), (int)(tar.y - 1), (int)(tar.z - 0.5)] == null)
+        if (cubeIdx[x, y-1, z] == null)
             return false;
         // 面前是方块时
-        if (cubeIdx[(int)(tar.x - 0.5), (int)(tar.y), (int)(tar.z - 0.5)] == null)
+        if (cubeIdx[x, y, z] != null)
             return false;
 
         return true;
