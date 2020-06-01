@@ -151,6 +151,7 @@ public class PlayerControl : MonoBehaviour
         {
             animatorControl.Jump();
             verticalSpeed = jumpSpeed;
+            moveSpeed = 3.0f;//重置水平速度
         }
     }
     //更新下落垂直速度
@@ -172,12 +173,16 @@ public class PlayerControl : MonoBehaviour
     {
         contact = hit;//简单的绑定作用
         GameObject hitObject = hit.gameObject;
+        Debug.Log(hitObject.name);
+        if(hitObject.name.Equals("IceBody"))//如果在冰面上
+            moveSpeed = 6.0f;
+        else
+            moveSpeed = 3.0f;//重置水平速度
         if(hitObject.name.Equals("Breaker(Clone)"))//如果碰撞到的物体为monster
         {
             Vector3 player_postion = transform.position;
             Vector3 monster_position = hitObject.transform.position;
             if(player_postion.y-monster_position.y>0.5f){
-                // world.GetComponent<World>().FallAround(monster_position,true,0.5f);//触发陷落
                 animatorControl.Jump();
                 verticalSpeed = jumpSpeed;
                 Monster HitMonster= hitObject.GetComponent<MonsterUpdate>().monster;
