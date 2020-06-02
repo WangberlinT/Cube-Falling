@@ -32,7 +32,7 @@ public class MonsterManager
     }
     public void DeleteMonster(Vector3 pos)
     {
-        Debug.Log("Delete: " + pos);
+        //Debug.Log("Delete: " + pos);
         if (monsterDatas.ContainsKey(pos))
         {
             MonsterData m = monsterDatas[pos];
@@ -56,7 +56,7 @@ public class MonsterManager
         if (datas != null && datas.Count != 0)
         {
             hasMonster = true;
-            Debug.Log("Data: " + datas.Count);
+            //Debug.Log("Data: " + datas.Count);
             foreach (MonsterData m in datas)
             {
                 monsterDatas.Add(m.GetPos(), m);

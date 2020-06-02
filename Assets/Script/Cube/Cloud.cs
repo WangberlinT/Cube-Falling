@@ -55,7 +55,7 @@ public class Cloud : Cube
 
     public override void OnTread()
     {
-        Debug.Log("Tread");
+        //Debug.Log("Tread");
         if(!isFalling)
         {
             actor.DelayToFall(standTime, this);

@@ -15,7 +15,7 @@ public class Breaker : Monster
     // 死后使地下的方块塌陷
     public Breaker(Vector3 pos,World world):base(pos)
     {
-        Debug.Log("world: " + world);
+        //Debug.Log("world: " + world);
         //随机方向种子
         thisWorld = world;
         Random.InitState(0);
@@ -39,8 +39,8 @@ public class Breaker : Monster
         int y = RangeInt(monster.transform.localPosition.y);
         int z = RangeInt(monster.transform.localPosition.z);
         Vector3Int tmp = new Vector3Int(x, y-1, z);
-        Debug.Log("tmp");
-        Debug.Log(tmp);
+        //Debug.Log("tmp");
+        //Debug.Log(tmp);
         this.SetFallCenter(tmp);
         //播放死亡动画
         this.GetAnimator().SetBool("isDead", true);
@@ -119,7 +119,6 @@ public class Breaker : Monster
         int x = RangeInt(tar.x);
         int y = RangeInt(tar.y);
         int z = RangeInt(tar.z);
-        //超出边界的时候
         //Debug.Log(x+", "+y+", "+z);
         // 脚下没有方块时的时候
         if (cubeIdx[x, y-1, z] == null)
