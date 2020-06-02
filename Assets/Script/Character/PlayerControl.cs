@@ -51,7 +51,7 @@ public class PlayerControl : MonoBehaviour
     private void Move()
     {
         movement = Vector3.zero;
-        Debug.Log(moveSpeed);
+        // Debug.Log(moveSpeed);
         FallDown();
 
         if (horInput != 0 || vertInput != 0)
