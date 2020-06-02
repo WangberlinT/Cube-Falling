@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             debugScreen = GameObject.Find("Debug Screen");
+            debugScreen.SetActive(false);
             world = GameObject.Find("World").GetComponent<World>();
             screen = DebugScreen.GetInstance();
             player = GameObject.Find("Player");
@@ -120,6 +121,7 @@ public class GameManager : MonoBehaviour
 
     private void WorldInit()
     {
+        gameover = false;
         if(mapSelected != null)
             world.LoadWorld(mapSelected);
         //else load default

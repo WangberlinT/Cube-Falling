@@ -103,7 +103,10 @@ public class LoadMap : MonoBehaviour
 
     //检查文件名合法性
     
-
+    public void Back()
+    {
+        SceneManager.LoadScene(GameManager.Menu);
+    }
 
 
 }
