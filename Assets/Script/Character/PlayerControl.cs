@@ -124,7 +124,7 @@ public class PlayerControl : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
             upSpeed = moveSpeed;
-        else if (Input.GetKey(KeyCode.LeftControl)&& Input.GetKey(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.BackQuote))
             upSpeed = -moveSpeed;
         else
             upSpeed = 0;
