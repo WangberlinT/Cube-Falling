@@ -27,7 +27,17 @@ public class PlayMenu : MonoBehaviour
 
     public void Tutorial()
     {
-        controller.GoToTutorial();
+        controller.GoToLevel(0);
+    }
+
+    public void HelloWorld()
+    {
+        controller.GoToLevel(1);
+    }
+
+    public void IceJump()
+    {
+        controller.GoToLevel(2);
     }
 
     

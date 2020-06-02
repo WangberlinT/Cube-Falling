@@ -10,6 +10,7 @@ public class MenuController : MonoBehaviour
     private const string STORYMENU = "StoryMenu";
     private List<GameObject> menus = new List<GameObject>();
     private static MenuController controller;
+    public string[] levels;
     private void Awake()
     {
         if (controller != null)
@@ -81,9 +82,9 @@ public class MenuController : MonoBehaviour
         OnlyActive(STORYMENU);
     }
 
-    public void GoToTutorial()
+    public void GoToLevel(int lv)
     {
-        GameManager.SetWorldMap("Display");
+        GameManager.SetWorldMap(levels[lv]);
         SceneManager.LoadScene(GameManager.MainScene);
     }
 }
