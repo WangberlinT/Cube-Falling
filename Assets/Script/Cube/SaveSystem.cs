@@ -4,8 +4,12 @@ using System;
 using System.IO;
 public static class SaveSystem
 {
-
+#if UNITY_EDITOR
     public static string savingDir = Application.persistentDataPath+"/";
+#else
+    public static string savingDir = Directory.GetCurrentDirectory() + "/Map/";
+#endif
+
     public static string POSTFIX = ".data";
     //默认地图为defautlt.meta 玩家不可见，在生成新地图时作为模板
     private static string DEFAULT_MAP = "default.meta";

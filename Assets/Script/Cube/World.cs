@@ -137,6 +137,7 @@ public class World : MonoBehaviour, WorldObserver
      */
     public void SetCube(Vector3 pos, CubeType type)
     {
+        DebugScreen.GetInstance().Log("World", pos.ToString());
         cubeManager.SetCube(pos, type);
     }
 
