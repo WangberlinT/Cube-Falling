@@ -214,7 +214,7 @@ public class CubeManager
 
         if(!OutOfBound(x,y,z))
         {
-            Debug.Log("Here" + new Vector3(x, y, z));
+            //Debug.Log("Here" + new Vector3(x, y, z));
             if (cubes[x, y, z] != null)
                 cubes[x, y, z].OnTread();
         }

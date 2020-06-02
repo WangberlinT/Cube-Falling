@@ -16,6 +16,8 @@ public class PlayerControl : MonoBehaviour
     //------Private-------------------
     private CharacterController character;
     private float verticalSpeed;
+    private float initMoveSpeed;
+    private int isSpeedUp;
     private ControllerColliderHit contact;//Controller 碰撞检测
     private const string TAG = "[PlayerControl]";
     private Vector3 movement = Vector3.zero;
@@ -38,6 +40,7 @@ public class PlayerControl : MonoBehaviour
         verticalSpeed = minFall;
         character = GetComponent<CharacterController>();
         screen = DebugScreen.GetInstance();
+        initMoveSpeed = moveSpeed;
     }
     void Update()
     {
@@ -48,7 +51,7 @@ public class PlayerControl : MonoBehaviour
     private void Move()
     {
         movement = Vector3.zero;
-
+        Debug.Log(moveSpeed);
         FallDown();
 
         if (horInput != 0 || vertInput != 0)
@@ -56,7 +59,7 @@ public class PlayerControl : MonoBehaviour
             // get vector direction(absolute)
             movement.x = horInput;
             movement.z = vertInput;
-            movement = Vector3.ClampMagnitude(movement * moveSpeed, moveSpeed);
+            movement = Vector3.ClampMagnitude(movement * (moveSpeed+(0.5f*initMoveSpeed) * isSpeedUp), (moveSpeed + (0.5f * initMoveSpeed) * isSpeedUp));
 
 
             //Debug.Log(string.Format("x,z position = ({0},{1})", movement.x, movement.z));
@@ -108,12 +111,20 @@ public class PlayerControl : MonoBehaviour
 
     private void GetUserInput()
     {
+        
         horInput = Input.GetAxis("Horizontal");
         vertInput = Input.GetAxis("Vertical");
         isJump = Input.GetButtonDown("Jump");
+        //当按下左shift时加速
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            isSpeedUp = 1;
+        //当放开左shift时恢复原速
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+            isSpeedUp = 0;
+
         if (Input.GetKey(KeyCode.Space))
             upSpeed = moveSpeed;
-        else if (Input.GetKey(KeyCode.LeftShift))
+        else if (Input.GetKey(KeyCode.LeftControl)&& Input.GetKey(KeyCode.Space))
             upSpeed = -moveSpeed;
         else
             upSpeed = 0;
@@ -128,7 +139,7 @@ public class PlayerControl : MonoBehaviour
         //如果是下落状态（速度向下），就检测character向下的射线检测
         if (verticalSpeed < 0 && Physics.Raycast(transform.position, Vector3.down, out hit))
         {
-            Debug.DrawLine(transform.position, hit.point, Color.red);
+            //Debug.DrawLine(transform.position, hit.point, Color.red);
             //由于character是胶囊型，所以check是人物和地面碰撞检测距离（应该是一个接近0的很小的值）
             float check = (character.height + character.radius) / 2f + ground_offset - 0.8f;
             distance = hit.distance;

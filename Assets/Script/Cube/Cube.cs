@@ -62,7 +62,7 @@ public abstract class Cube
      */
     public virtual void OnTread()
     {
-        Debug.Log("Cube");
+        //Debug.Log("Cube");
         //Donothing
     }
 
