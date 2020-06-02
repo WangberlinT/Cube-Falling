@@ -7,6 +7,7 @@ public class MenuController : MonoBehaviour
     private const string MAINMENU = "MainMenu";
     private const string OPTIONMENU = "OptionMenu";
     private const string PLAYMENU = "PlayMenu";
+    private const string STORYMENU = "StoryMenu";
     private List<GameObject> menus = new List<GameObject>();
     private static MenuController controller;
     private void Awake()
@@ -19,6 +20,7 @@ public class MenuController : MonoBehaviour
             menus.Add(GameObject.Find(MAINMENU));
             menus.Add(GameObject.Find(OPTIONMENU));
             menus.Add(GameObject.Find(PLAYMENU));
+            menus.Add(GameObject.Find(STORYMENU));
             Init();
         }
     }
@@ -48,6 +50,11 @@ public class MenuController : MonoBehaviour
         OnlyActive(PLAYMENU);
     }
 
+    public void GotoStoryMenu()
+    {
+        OnlyActive(STORYMENU);
+    }
+
     private void OnlyActive(string menuName)
     {
         foreach (GameObject g in menus)
@@ -71,6 +78,12 @@ public class MenuController : MonoBehaviour
 
     public void GoToStoryScene()
     {
+        OnlyActive(STORYMENU);
+    }
+
+    public void GoToTutorial()
+    {
+        GameManager.SetWorldMap("Display");
         SceneManager.LoadScene(GameManager.MainScene);
     }
 }

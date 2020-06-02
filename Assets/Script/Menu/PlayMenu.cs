@@ -25,5 +25,10 @@ public class PlayMenu : MonoBehaviour
         controller.GotoMainMenu();
     }
 
+    public void Tutorial()
+    {
+        controller.GoToTutorial();
+    }
+
     
 }

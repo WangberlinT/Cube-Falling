@@ -120,12 +120,18 @@ public class Breaker : Monster
         int y = RangeInt(tar.y);
         int z = RangeInt(tar.z);
         //Debug.Log(x+", "+y+", "+z);
-        // 脚下没有方块时的时候
-        if (cubeIdx[x, y-1, z] == null)
-            return false;
+
         // 面前是方块时
+        if (thisWorld.GetCubeManager().OutOfBound(x, y, z) || thisWorld.GetCubeManager().OutOfBound(x, y - 1, z))
+            return false;
+
         if (cubeIdx[x, y, z] != null)
             return false;
+        // 脚下没有方块时的时候
+        if (cubeIdx[x, y - 1, z] == null )
+            return false;
+
+
 
         return true;
     }

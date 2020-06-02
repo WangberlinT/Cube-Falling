@@ -178,7 +178,7 @@ public class CubeManager
             }            
         }
     }
-    private bool OutOfBound(int x, int y, int z)
+    public bool OutOfBound(int x, int y, int z)
     {
         return x < 0 || x >= world.worldWidth || y < 0 || y >= world.worldHeight || z < 0 || z >= world.worldWidth;
     }
