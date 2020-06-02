@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public static int LoadMapScene = 1;
     public static int MainScene = 2;
     public static int EditScene = 3;
+    public static int StoryScene = 4;
     public static bool DebugMode = false;
     private static string mapSelected;//TODO: set 默认地图
     private static GameManager instance;
